@@ -6,7 +6,8 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import ThemeToggler from "./model/theme-model";
 
-import { LogoutModel } from "@/components/model/logout-model";
+import LogoutModel from "./model/logout-model";
+
 
 import { useAuth } from "@/context/auth";
 
@@ -18,8 +19,10 @@ const Header = () => {
 
   return (
     <>
-      <LogoutModel isOpen={open} onClose={() => setOpen(false)} />
-      <div className={` bg-center  ${openMenu ? "bgNavbar" : null}`}>
+      {open && (
+        <LogoutModel isOpen={open} onClose={() => setOpen(false)} />
+      )}
+      <div className={`bg-center`}>
         <nav
           className={`mx-[24px] lg:mx-[160px] md:mx-[80px]   xl:mx-[160px] flex flex-col md:flex-row justify-between items-center ${
             !openMenu ? "h-[120px]" : "h-screen"
@@ -83,9 +86,11 @@ const Header = () => {
               <Link href={"/History"}>History</Link>
             </li>
           </ul>
+         
           <div className="flex gap-4  items-center md:flex-row flex-col">
+            <div className="lg:block hidden">
             <ThemeToggler />
-
+            </div>
             <button
               className={`text-base w-full ${
                 !openMenu ? "invisible md:visible" : "visible"

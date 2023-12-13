@@ -1,49 +1,100 @@
+"use client";
+import { X } from "lucide-react";
+import { useEffect, useState } from "react";
 
-
-const InstructionModel = () => {
-  return (
-    <div className="bg-slate-950   h-screen justify-center flex flex-col items-center gap-4">
-    <h1>hi Adan!</h1>
-    <div className="max-w-[800px] justify-center flex flex-col items-center border-4 border-cyan-700 p-8">
-      <h1 className="text-cyan-300 text-3xl   font-semibold ">
-        Quiz Application
-      </h1>
-      <ol className="flex flex-col items-start text-slate-300 italic mt-4 gap-1 ">
-        <div className="flex gap-2 items-center">
-          <div className="rounded-full w-2 h-2 bg-cyan-400" />
-          <li>You will be asked 10 questions one after another. </li>
-        </div>
-        <div className="flex gap-2 items-center">
-          <div className="rounded-full w-2 h-2 bg-cyan-400" />
-          <li>10 points is awarded for the correct answer.</li>
-        </div>
-        <div className="flex gap-2 items-center">
-          <div className="rounded-full w-2 h-2 bg-cyan-400" />
-          <li>
-            Each question has three options. You can choose only one option.{" "}
-          </li>
-        </div>
-        <div className="flex gap-2 items-center">
-          <div className="rounded-full w-2 h-2 bg-cyan-400" />
-          <li>
-            You can review and change answers before the quiz is finish.{" "}
-          </li>
-        </div>
-        <div className="flex gap-2 items-center">
-          <div className="rounded-full w-2 h-2 bg-cyan-400" />
-          <li>he result will be declared at the end of the quiz.</li>
-        </div>
-      </ol>
-      <h3 className="items-start text-slate-700 mt-1 italic justify-start text-md  ">
-        Please read instructions before conducting the test
-      </h3>
-
-      <button className="bg-cyan-600 text-slate-200 hover:text-cyan-500 hover:bg-slate-800   h-8 mt-8 rounded-3xl flex items-center justify-center px-3">
-        Start Quiz
-      </button>
-    </div>
-  </div>
-  )
+interface InstructionModelProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
+const InstructionModel: React.FC<InstructionModelProps> = ({
+  isOpen,
+  onClose,
+}) => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-export default InstructionModel
+  if (!isMounted || !isOpen) {
+    return null;
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center">
+      <div className="bg-stone-200 dark:bg-slate-950 p-4 w-96 rounded-lg shadow-lg">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="flex flex-row justify-between items-center w-full">
+            <div className="text-lg font-semibold ">Instructions</div>
+            <div
+              onClick={onClose}
+              className="p-[3px] cursor-pointer flex justify-center items-center border-2 border-black  rounded-md dark:border-white  "
+            >
+              <X className="h-4 w-4 " />
+            </div>
+          </div>
+          <div className="text-sm text-gray-500">
+            Please read the instructions before taking the Quiz.
+          </div>
+        </div>
+        {/* Instructions */}
+        <div className="space-y-4 mt-4">
+          <div className="flex flex-col gap-3 mx-2 my-4">
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                You will be asked 10 questions one after another.
+              </p>
+            </div>
+
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                Each question has four options. You can choose only one option.
+              </p>
+            </div>
+
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                You can review and change answers before the quiz is finish.{" "}
+              </p>
+            </div>
+
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                If you attempt more then 4 questions correct then you hav passed
+                other wise fail.
+              </p>
+            </div>
+
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                The result will not declare be declared until all the question
+                have been a attempted
+              </p>
+            </div>
+
+            <div className="flex gap-2 items-center justify-start">
+              <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
+              <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
+                The result will be declared at the end of the quiz.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="mt-6 flex justify-end">
+          <button
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+            onClick={onClose}
+          >
+            Continue
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default InstructionModel;
