@@ -8,7 +8,6 @@ import ThemeToggler from "./model/theme-model";
 
 import LogoutModel from "./model/logout-model";
 
-
 import { useAuth } from "@/context/auth";
 
 const Header = () => {
@@ -19,9 +18,7 @@ const Header = () => {
 
   return (
     <>
-      {open && (
-        <LogoutModel isOpen={open} onClose={() => setOpen(false)} />
-      )}
+      {open && <LogoutModel isOpen={open} onClose={() => setOpen(false)} />}
       <div className={`bg-center`}>
         <nav
           className={`mx-[24px] lg:mx-[160px] md:mx-[80px]   xl:mx-[160px] flex flex-col md:flex-row justify-between items-center ${
@@ -67,6 +64,7 @@ const Header = () => {
             >
               <Link href={"/"}>Home</Link>
             </li>
+
             <li
               className={`  ${
                 pathname == "/Quizs"
@@ -83,13 +81,17 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/History"}>History</Link>
+              {!auth?.user?.admin ? (
+                <Link href={"/History"}>History</Link>
+              ) : (
+                <Link href={"/Admin"}>Admin</Link>
+              )}
             </li>
           </ul>
-         
+
           <div className="flex gap-4  items-center md:flex-row flex-col">
             <div className="lg:block hidden">
-            <ThemeToggler />
+              <ThemeToggler />
             </div>
             <button
               className={`text-base w-full ${
@@ -97,7 +99,7 @@ const Header = () => {
               } md:max-w-fit leading-[26px] font-semibold md:shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl text-white`}
             >
               {!auth?.user?.email ? (
-                <Link href={"/auth"}> Log In / Sign Up</Link>
+                <Link href={"/Auth"}> Log In / Sign Up</Link>
               ) : (
                 <p onClick={() => setOpen(true)}>Log out</p>
               )}

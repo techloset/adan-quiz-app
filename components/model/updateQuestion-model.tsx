@@ -5,20 +5,20 @@ import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 import { X } from "lucide-react";
-import { QuizType } from "@/type";
+import { QuestionType } from "@/type";
 import Input from "../Input";
 import Textarea from "../Textarea";
 import { useDispatch } from "react-redux";
 import { useAuth } from "@/context/auth";
-import { updateQuizs } from "@/store/quizSlice";
+import { updateQuestion } from "@/store/questionSlice";
 
-interface UpdateQuizModelProps {
+interface UpdateQuestinnModelProps {
   isOpen: boolean;
   onClose: () => void;
-  data: QuizType;
+  data: QuestionType;
 }
 
-const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
+const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
   isOpen,
   onClose,
   data,
@@ -32,66 +32,81 @@ const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue,  // Add this line
+    setValue, 
   } = useForm<FieldValues>({
-    
     defaultValues: {
       id: data.id,
-      title: data.title,
-      description: data.description,
+      Question: data.Question,
+      CorrectOption: data.CorrectOption,
+      OptionOne: data.OptionOne,
+      OptionTwo: data.OptionTwo,
+      OptionThree: data.OptionThree,
+      quizId: data.quizId,
     },
   });
   useEffect(() => {
     setIsMounted(true);
-  
+
     // Manually set default values
     setValue("id", data.id);
-    setValue("title", data.title);
-    setValue("description", data.description);
-  
+    setValue("question", data.Question);
+    setValue("correctOption", data.CorrectOption);
+    setValue("OptionOne", data.OptionOne);
+    setValue("OptionTwo", data.OptionTwo);
+    setValue("OptionThree", data.OptionThree);
+    setValue("quizId", data.quizId);
+
     return () => {
       setIsMounted(false);
     };
   }, [data, setValue]);
-  
+
   if (!isMounted || !isOpen) {
     return null;
   }
 
   const onUpdateHandler: SubmitHandler<FieldValues> = async (item) => {
-    if (item.title && item.description) {
-      if (item.title !== "" || item.description !== "") {
-        try {
-          setLoading(true);
-          const updatedQuiz = {
-            id: item.id as string,
-            title: item.title as string,
-            description: item.description as string,
-          };
-          const headers = {
-            Authorization: `Bearer ${auth?.token}`,
-          };
-          const quiz = {
-            Quiz: updatedQuiz,
-            headers: headers,
-          };
-          await dispatch<any>(updateQuizs(quiz));
-          data == null
-          onClose();
-          toast.success("Successfully updated Quiz");
-        } catch (error: any) {
-          toast.error("Something went wrong please try again1");
-          console.log("-------------------------------------");
-          console.log(error.message);
-          console.log("-------------------------------------");
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        toast.error("Please fill the fields");
+    if (
+      !item.CorrectOption ||
+      !item.OptionOne ||
+      !item.OptionTwo ||
+      !item.OptionThree ||
+      !item.id ||
+      !item.Question
+    ) {
+      try {
+        setLoading(true);
+        const updatedQuestion = {
+          id: item.id as string,
+          Question: item.Question as string,
+          CorrectOption: item.CorrectOption as string,
+          OptionOne: item.OptionOne as string,
+          OptionTwo: item.OptionTwo as string,
+          OptionThree: item.OptionThree as string,
+          quizId: item.quizId as string,
+        };
+        const headers = {
+          Authorization: `Bearer ${auth?.token}`,
+        };
+        const question = {
+          Question: updatedQuestion,
+          headers: headers,
+        };
+        await dispatch<any>(updateQuestion(question));
+        data == null;
+        onClose();
+        toast.success("Successfully updated Quiz");
+      } catch (error: any) {
+        toast.error("Something went wrong please try again1");
+        console.log("-------------------------------------");
+        console.log(error.message);
+        console.log("-------------------------------------");
+      } finally {
+        setLoading(false);
       }
+    } else {
+      toast.error("Please fill the fields");
     }
-    
   };
 
   return (
@@ -116,21 +131,46 @@ const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
         {/* Inputs */}
         <div>
           <form className="space-y-6" onSubmit={handleSubmit(onUpdateHandler)}>
+            <Textarea
+              id="Question"
+              label="Question"
+              registor={register}
+              errors={errors}
+              disabled={loading}
+            />
             <Input
-              id="title"
-              label="Title"
+              id="CorrectOption"
+              label="Correct Option"
               type="text"
               registor={register}
               errors={errors}
               disabled={loading}
             />
-            <Textarea
-              id="description"
-              label="Description"
+            <Input
+              id="OptionOne"
+              label="Option One"
+              type="text"
               registor={register}
               errors={errors}
               disabled={loading}
             />
+            <Input
+              id="OptionTwo"
+              label="Option Two"
+              type="text"
+              registor={register}
+              errors={errors}
+              disabled={loading}
+            />
+            <Input
+              id="OptionThree"
+              label="Option Three"
+              type="text"
+              registor={register}
+              errors={errors}
+              disabled={loading}
+            />
+
             <div className="pt-6 space-x-2 flex items-center justify-between w-full">
               <button
                 disabled={loading}
@@ -154,4 +194,4 @@ const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
   );
 };
 
-export default UpdateQuizModel;
+export default UpdateQuestionModel;

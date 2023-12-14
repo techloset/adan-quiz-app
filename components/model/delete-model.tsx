@@ -4,18 +4,20 @@ import { useEffect, useState } from "react";
 
 import { X } from "lucide-react";
 
-interface DeleteQuizModelProps {
+interface DeleteModelProps {
   isOpen: boolean;
   onClose: () => void;
   onConfrim: () => void;
   loading?:boolean;
+  title:String
 }
 
-const DeleteQuizModel: React.FC<DeleteQuizModelProps> = ({
+const DeleteModel: React.FC<DeleteModelProps> = ({
   isOpen,
   onClose,
   onConfrim,
   loading,
+  title,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -33,7 +35,7 @@ const DeleteQuizModel: React.FC<DeleteQuizModelProps> = ({
         <div className="flex flex-col space-y-1.5 text-center sm:text-left">
           <div className="flex flex-row justify-between items-center">
             <div className="text-lg font-semibold leading-none tracking-tight">
-              Are you sure you want to Delete thi quiz
+              Are you sure you want to Delete this {title}
             </div>
             <div
               onClick={onClose}
@@ -67,4 +69,4 @@ const DeleteQuizModel: React.FC<DeleteQuizModelProps> = ({
   );
 };
 
-export default DeleteQuizModel;
+export default DeleteModel;

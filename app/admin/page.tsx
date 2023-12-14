@@ -1,27 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/auth";
+
 import { useDispatch, useSelector } from "react-redux";
 import { RoootState } from "@/store/store";
-import { getQuizs } from "@/store/quizSlice";
+import { getQuizs, deleteQuizs } from "@/store/quizSlice";
+
+import { HelpCircle, PenSquare, Plus, Trash2 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { HelpCircle, PenSquare, Trash2 } from "lucide-react";
-import { deleteQuizs } from "@/store/quizSlice";
-import { QuizType } from "@/type";
-import { useAuth } from "@/context/auth";
-import DeleteQuizModel from "@/components/model/deleteQuiz-model";
+
+import DeleteModel from "@/components/model/delete-model"
 import UpdateQuizModel from "@/components/model/updateQuiz-model";
+
+import { QuizType } from "@/type";
 
 export default function Home() {
   const [hover, setHover] = useState(0);
+
+  // State for delete and update
+  const dispatch = useDispatch(); // update the data
   const [loading, setLoading] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openUpdate, setOpenUpdate] = useState(false);
   const [currentItem, setCurrentItem] = useState<QuizType | null>(null);
 
-  const dispatch = useDispatch();
-  const [auth] = useAuth();
+  const [auth] = useAuth(); // get user
+  const router = useRouter();
 
+  // get data
   const getQuizsHandler = async () => {
     try {
       dispatch<any>(getQuizs());
@@ -31,21 +39,34 @@ export default function Home() {
       console.log("====================================");
     }
   };
-
   const Quiz: QuizType[] = useSelector((store: RoootState) => store.quiz.quizs);
-
   useEffect(() => {
     getQuizsHandler();
   }, []);
+
+  // To Delete Popover
   const DelelePopover = (item: QuizType) => {
-    setCurrentItem(item);
+    setCurrentItem((prevItem) => ({
+      ...prevItem,
+      description: item.description,
+      title: item.title,
+      id: item.id,
+    }));
     setOpenDelete(true);
   };
+
+  //To Update Popover
   const UpdatePopover = (item: QuizType) => {
-    setCurrentItem(item);
+    setCurrentItem((prevItem) => ({
+      ...prevItem,
+      description: item.description,
+      title: item.title,
+      id: item.id,
+    }));
     setOpenUpdate(true);
   };
 
+  // onDelete Handler
   const onDeleteHandler = async (item: QuizType) => {
     try {
       setLoading(true);
@@ -90,7 +111,8 @@ export default function Home() {
               return (
                 <div key={index}>
                   {currentItem !== null && (
-                    <DeleteQuizModel
+                    <DeleteModel
+                    title="Quiz"
                       isOpen={openDelete}
                       loading={loading}
                       onClose={() => setOpenDelete(false)}
@@ -162,7 +184,7 @@ export default function Home() {
                           <Trash2 size={20} />
                         </div>
                         <div
-                          className={`dark:bg-[#020E2D] p-[17px] rounded-full hover:relative hover:bottom-1  hover:bg-exact-dark-orange  hover:text-white dark:hover:bg-exact-light-orange dark:fill-blue-600 fill-blue-600 ${
+                          className={`dark:bg-[#020E2D] p-[17px] rounded-full hover:relative hover:bottom-1   hover:bg-fuchsia-600 dark:hover:bg-fuchsia-500 hover:text-white  dark:fill-blue-600 fill-blue-600 ${
                             Hovered
                               ? `bg-exact-white fill-exact-purple dark:bg-slate-950  `
                               : "bg-[#F3F4F6]"
@@ -172,14 +194,26 @@ export default function Home() {
                           <PenSquare size={20} />
                         </div>
                         <div
+                          className={`dark:bg-[#020E2D] p-[17px] rounded-full hover:relative hover:bottom-1  hover:bg-exact-dark-orange  hover:text-white dark:hover:bg-exact-light-orange dark:fill-blue-600 fill-blue-600 ${
+                            Hovered
+                              ? `bg-exact-white fill-exact-purple dark:bg-slate-950  `
+                              : "bg-[#F3F4F6]"
+                          } `}
+                          onClick={() => router.push(`/Admin/${item.id}`)}
+                        >
+                          <HelpCircle size={20} />
+                        </div>
+                        <div
                           className={`dark:bg-[#020E2D] p-[17px] rounded-full hover:relative hover:bottom-1   hover:bg-exact-green dark:hover:bg-exact-green hover:text-white  dark:fill-blue-600 fill-blue-600 ${
                             Hovered
                               ? `bg-exact-white fill-exact-purple dark:bg-slate-950  `
                               : "bg-[#F3F4F6]"
                           } `}
-                          onClick={() => UpdatePopover(item)}
+                          onClick={() =>
+                            router.push(`/Admin/${item.id}/AddQuestion`)
+                          }
                         >
-                          <HelpCircle size={20} />
+                          <Plus size={20} />
                         </div>
                       </div>
                     </div>

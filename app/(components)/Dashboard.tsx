@@ -3,6 +3,7 @@ import Image from "next/image";
 import Arrow from "@/public/Dashboard/RightArrow.svg";
 
 import { useAuth } from "@/context/auth";
+import Link from "next/link";
 
 const Dashboard = () => {
   const [auth] = useAuth();
@@ -26,7 +27,8 @@ const Dashboard = () => {
             reach new height's. Your education is our first priority.
           </p>
           {auth?.user?.admin && (
-            <button
+            <Link href={"/Admin/AddQuiz"}>
+             <button
               className={`w-fit relative shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl cursor-pointer`}
             >
               <span className="flex items-baseline">
@@ -40,6 +42,8 @@ const Dashboard = () => {
                 />
               </span>
             </button>
+            </Link>
+           
           )}
         </div>
         <div className=" w-full">
