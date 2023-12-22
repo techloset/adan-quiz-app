@@ -160,7 +160,7 @@ const Qestions = ({ params }: { params: { QuizId: string } }) => {
             </div>
           ) : (
             <div className="flex items-center justify-center text center gap-2 text-xl italic">
-              <h4>You haven't added any Quiz's to add Quiz</h4>
+              <h4>You haven&apos;t added any Quiz&apos;s to add Quiz</h4>
               <Link
                 href={`/Admin/${params.QuizId}/AddQuestion`}
                 className="text-blue-500 dark:text-exact-red cursor-pointer"

@@ -45,7 +45,7 @@ export default function Home({ params }: { params: { resultId: string } }) {
               </thead>
               {Result.ResultHistory?.map((item: any, index: number) => {
                 return (
-                  <tbody>
+                  <tbody key={index}>
                     <tr className="">
                       <td className="p-4 font-medium">{index + 1}</td>
                       <td className="p-4">{item.Question}</td>

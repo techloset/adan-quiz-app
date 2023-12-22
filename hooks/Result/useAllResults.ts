@@ -15,7 +15,7 @@ export default function useAllResults() {
   const ResultHandler = () => {
     try {
       setIsLoading(true);
-      const headers = {
+      const headers: { Authorization: string } = {
         Authorization: `Bearer ${auth?.token}`,
       };
 

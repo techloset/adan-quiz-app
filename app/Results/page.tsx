@@ -3,11 +3,13 @@ import Loader from "@/components/Loader";
 import useAllResults from "@/hooks/Result/useAllResults";
 import { Navigation } from "lucide-react";
 import { useRouter } from "next/navigation";
-import Moment from "react-moment";
+import moment from "moment";
 
 export default function Home() {
   const { Results, isLoading } = useAllResults();
   const router = useRouter();
+  const momentDate = (date: string) => moment(date).format("LLL");
+  
   if (isLoading) {
     return (
       <div className="flex h-screen justify-center items-center ">
@@ -40,9 +42,7 @@ export default function Home() {
                   return (
                     <tr className="cursor-pointer text-center" key={item.id}>
                       <td className="p-4 text-center">
-                        <Moment format="dd:m:yy hh:mm">
-                          {item.createdAt.toString()}
-                        </Moment>
+                        {momentDate(item.createdAt.toString())}
                       </td>
                       <td className="p-4 text-center">{item.total}</td>
                       <td className="p-4 text-center">{item.mark}</td>
