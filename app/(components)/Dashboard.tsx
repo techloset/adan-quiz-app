@@ -28,27 +28,26 @@ const Dashboard = () => {
           </p>
           {auth?.user?.admin && (
             <Link href={"/Admin/AddQuiz"}>
-             <button
-              className={`w-fit relative shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl cursor-pointer`}
-            >
-              <span className="flex items-baseline">
-                <p className="text-base font-semibold leading-[26px] text-exact-white">
-                  Create new Quizs
-                </p>
-                <Image
-                  src={Arrow}
-                  alt="icon"
-                  className="w-[20px] h-[14px] ml-4 relative"
-                />
-              </span>
-            </button>
+              <button
+                className={`w-fit relative shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl cursor-pointer`}
+              >
+                <span className="flex items-baseline">
+                  <p className="text-base font-semibold leading-[26px] text-exact-white">
+                    Create new Quizs
+                  </p>
+                  <Image
+                    src={Arrow}
+                    alt="icon"
+                    className="w-[20px] h-[14px] ml-4 relative"
+                  />
+                </span>
+              </button>
             </Link>
-           
           )}
         </div>
         <div className=" w-full">
           <Image
-            src="/dashboard/Bgmobile.png"
+            src="/Dashboard/Bgmobile.png"
             width={800}
             height={800}
             alt="heroImage"

@@ -9,7 +9,6 @@ import { QuizType } from "@/type";
 import Input from "../Input";
 import Textarea from "../Textarea";
 import { useDispatch } from "react-redux";
-import { useAuth } from "@/context/auth";
 import { updateQuizs } from "@/store/quizSlice";
 
 interface UpdateQuizModelProps {
@@ -26,7 +25,6 @@ const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const [auth] = useAuth();
 
   const {
     register,
@@ -68,12 +66,8 @@ const UpdateQuizModel: React.FC<UpdateQuizModelProps> = ({
             title: item.title as string,
             description: item.description as string,
           };
-          const headers = {
-            Authorization: `Bearer ${auth?.token}`,
-          };
           const quiz = {
             Quiz: updatedQuiz,
-            headers: headers,
           };
           await dispatch<any>(updateQuizs(quiz));
           data == null

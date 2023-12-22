@@ -4,17 +4,15 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import { QuestionType } from "@/type";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useRouter } from "next/navigation";
+import { POST } from "@/lib/instance";
 
 const Questions = ({
   data,
   quizId,
-  token,
 }: {
   data: QuestionType[];
   quizId: string;
-  token: string;
 }) => {
   const { register } = useForm();
   const [isloading, setIsloading] = useState(false);
@@ -37,13 +35,10 @@ const Questions = ({
       if (isAnyOptionNotSelected) {
         return toast.error("Please answer every question first");
       }
-      const headers = {
-        Authorization: `Bearer ${token}`,
-      };
-      const res = await axios.post(
-        "http://localhost:8000/user/addResult",
+     
+      const res = await POST(
+        "/user/addResult",
         { quizId, selectedOptions },
-        { headers }
       );
       if (res.data.status == "success") {
         toast.success("Test has been taken");

@@ -1,3 +1,4 @@
+import { POST } from "@/lib/instance";
 import { AuthQuestionType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
@@ -7,7 +8,7 @@ export const getQuestions = createAsyncThunk(
   async (id: string) => {
     try {
       const response = await axios.post(
-        "http://localhost:8000/question/getQuestion",
+        "https://spotless-plum-parka.cyclic.app/question/getQuestion",
         { id }
       );
       if (response.data.status === "success") {
@@ -32,12 +33,7 @@ export const deleteQuestion = createAsyncThunk(
     try {
       let id = item.Question.id;
       let QuizId = item.id;
-      let headers = item.headers;
-      const res = await axios.post(
-        "http://localhost:8000/question/deleteQuestion",
-        { id, QuizId },
-        { headers }
-      );
+      const res = await POST("/question/deleteQuestion", { id, QuizId });
       if (res.data.status === "success") {
         return res.data.question;
       } else {
@@ -61,11 +57,9 @@ export const updateQuestion = createAsyncThunk(
       let OptionOne = item.Question.OptionOne;
       let OptionTwo = item.Question.OptionTwo;
       let OptionThree = item.Question.OptionThree;
-      let headers = item.headers;
-      const res = await axios.post(
-        "http://localhost:8000/question/updateQuestion",
+      const res = await POST(
+        "https://spotless-plum-parka.cyclic.app/question/updateQuestion",
         { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
-        { headers }
       );
       if (res.data.status === "success") {
         return res.data.question;

@@ -3,19 +3,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ThemeToggler from "./model/theme-model";
 
 import LogoutModel from "./model/logout-model";
 
 import { useAuth } from "@/context/auth";
+import Instance from "@/lib/instance";
 
 const Header = () => {
   const [openMenu, setOpenMenu] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [auth] = useAuth();
-
+  useEffect(() => {
+    if (auth.token)
+      Instance.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
+  }, []);
   return (
     <>
       {open && <LogoutModel isOpen={open} onClose={() => setOpen(false)} />}

@@ -9,7 +9,6 @@ import { QuestionType } from "@/type";
 import Input from "../Input";
 import Textarea from "../Textarea";
 import { useDispatch } from "react-redux";
-import { useAuth } from "@/context/auth";
 import { updateQuestion } from "@/store/questionSlice";
 
 interface UpdateQuestinnModelProps {
@@ -26,7 +25,6 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const [auth] = useAuth();
 
   const {
     register,
@@ -81,12 +79,8 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
       ) {
         try {
           setLoading(true);
-          const headers = {
-            Authorization: `Bearer ${auth?.token}`,
-          };
           const question = {
             Question: item,
-            headers: headers,
           };
           //  @ts-ignore
           await dispatch<any>(updateQuestion(question));

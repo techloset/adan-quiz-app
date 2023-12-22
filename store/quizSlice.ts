@@ -1,10 +1,10 @@
-import { AuthQuizType} from "@/type";
+import { GET, POST } from "@/lib/instance";
+import { AuthQuizType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const getQuizs = createAsyncThunk("quiz/getQuizs", async () => {
   try {
-    const response = await axios.get("http://localhost:8000/quiz/getQuiz");
+    const response = await GET("/quiz/getQuiz");
     if (response.data.status === "success") {
       return response.data.quizs;
     } else {
@@ -26,12 +26,7 @@ export const deleteQuizs = createAsyncThunk(
   async (item: AuthQuizType) => {
     try {
       let id = item.Quiz.id;
-      let headers = item.headers;
-      const res = await axios.post(
-        "http://localhost:8000/quiz/deleteQuiz",
-        { id },
-        { headers }
-      );
+      const res = await POST("/quiz/deleteQuiz", { id });
       if (res.data.status === "success") {
         return res.data.quiz;
       } else {
@@ -52,12 +47,11 @@ export const updateQuizs = createAsyncThunk(
       let id = item.Quiz.id;
       let title = item.Quiz.title;
       let description = item.Quiz.description;
-      let headers = item.headers;
-      const res = await axios.post(
-        "http://localhost:8000/quiz/updateQuiz",
-        { id, title, description },
-        { headers }
-      );
+      const res = await POST("/quiz/updateQuiz", {
+        id,
+        title,
+        description,
+      });
       if (res.data.status === "success") {
         return res.data.quiz;
       } else {

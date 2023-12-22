@@ -10,7 +10,7 @@ import Header from "@/components/Header";
 
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
-import { AuthProvider } from "@/context/auth";
+import { AuthProvider, useAuth } from "@/context/auth";
 
 export default function RootLayout({
   children,

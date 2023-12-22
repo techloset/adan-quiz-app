@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuth } from "@/context/auth";
 import { RoootState } from "@/store/store";
 import { getResults } from "@/store/userSlice";
 import { ResultType } from "@/type";
@@ -9,17 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function useAllResults() {
   const [isLoading, setIsLoading] = useState(false);
-  const [auth] = useAuth();
   const dispatch = useDispatch();
 
   const ResultHandler = () => {
     try {
       setIsLoading(true);
-      const headers: { Authorization: string } = {
-        Authorization: `Bearer ${auth?.token}`,
-      };
-
-      dispatch<any>(getResults(headers));
+      dispatch<any>(getResults());
     } catch (error) {
       console.log("================catch====================");
       console.log(error);

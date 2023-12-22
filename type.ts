@@ -8,7 +8,6 @@ export interface QuizType {
 
 export interface AuthQuizType {
   Quiz: QuizType;
-  headers: any;
 }
 export interface CorrectOptionType {
   id: string;
@@ -26,12 +25,10 @@ export interface QuestionType {
 export interface AuthQuestionType {
   Question: QuestionType;
   id?: string;
-  headers: any;
 }
 
 export interface AuthTestQuiz {
   id: string;
-  headers: any;
 }
 export interface TestQuizType {
   id: string;
@@ -41,7 +38,6 @@ export interface TestQuizType {
 }
 export interface AuthResulttype {
   id: string;
-  headers: any;
 }
 export interface ResultType {
   id: string;

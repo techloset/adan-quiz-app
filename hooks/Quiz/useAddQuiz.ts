@@ -10,6 +10,7 @@ import axios from "axios";
 
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { POST } from "@/lib/instance";
 
 export default function useAddQuiz() {
   const [isloading, setIsloading] = useState(false);
@@ -42,17 +43,13 @@ export default function useAddQuiz() {
     setIsloading(true);
     let description = data.description;
     let title = data.title;
-    const headers = {
-      Authorization: `Bearer ${auth?.token}`,
-    };
+   
 
     try {
-      const res = await axios.post(
-        "http://localhost:8000/quiz/addQuiz",
+      const res = await POST(
+        "/quiz/addQuiz",
         { description, title },
-        { headers }
       );
-
       if (res.data.status === "success") {
        await router.push(`/Admin/${res.data.quiz.id}/AddQuestion`)
         toast.success("Successfully added Quiz");

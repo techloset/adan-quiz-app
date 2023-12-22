@@ -1,18 +1,16 @@
 "use client";
 import { useState } from "react";
-import { useAuth } from "@/context/auth";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import Button from "@/components/Button";
 
-import axios from "axios";
 import { toast } from "react-hot-toast";
+import { POST } from "@/lib/instance";
 
 export default function Home({ params }: { params: { QuizId: string } }) {
   const [isloading, setIsloading] = useState(false);
-  const [auth] = useAuth();
 
   const formSchema = z.object({
     question: z
@@ -66,14 +64,11 @@ export default function Home({ params }: { params: { QuizId: string } }) {
     let OptionOne = data.OptionOne;
     let OptionTwo = data.OptionTwo;
     let OptionThree = data.OptionThree;
-    const headers = {
-      Authorization: `Bearer ${auth?.token}`,
-    };
+    
     try {
-      const res = await axios.post(
-        "http://localhost:8000/question/addQuestion",
-        { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
-        { headers }
+      const res = await POST(
+        "/question/addQuestion",
+        { id, question, correctOption, OptionOne, OptionTwo, OptionThree }
       );
       if (res.status == 204) {
         toast.success("Successfully added Question");
@@ -82,7 +77,7 @@ export default function Home({ params }: { params: { QuizId: string } }) {
       }
     } catch (error) {
       toast.error("An error occurred. Please try again later.");
-      console.log(error)
+      console.log(error);
     } finally {
       setIsloading(false);
       form.reset();

@@ -1,13 +1,12 @@
 "use client";
 
 import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 
 import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
 import { useAuth } from "@/context/auth";
-
+import { POST } from "@/lib/instance";
 type Variant = "LOGIN" | "REGISTER";
 
 export default function useAuthHook() {
@@ -33,63 +32,58 @@ export default function useAuthHook() {
       if (variant == "LOGIN") {
         let email = data.email;
         let password = data.password;
-        await axios
-          .post("http://localhost:8000/auth/login", { email, password })
-          .then((res) => {
-            if (res.data.status == "success") {
-              setAuth({
-                ...auth,
-                user: res.data.user,
-                token: res.data.token,
-              });
-              localStorage.setItem("auth", JSON.stringify(res.data));
-
-              toast.success("Login Successfull");
-              router.push("/");
-              setIsloading(false);
-            } else if (res.data.status == "Failed") {
-              toast.error(res.data.message);
-              setIsloading(false);
-            } else {
-              toast.error("Somthing went wrong, try again");
-              setIsloading(false);
-            }
-          });
+        await POST("/auth/login", { email, password }).then((res) => {
+          if (res.data.status == "success") {
+            setAuth({
+              ...auth,
+              user: res.data.user,
+              token: res.data.token,
+            });
+            localStorage.setItem("auth", JSON.stringify(res.data));
+            toast.success("Login Successfull");
+            router.push("/");
+            setIsloading(false);
+          } else if (res.data.status == "Failed") {
+            toast.error(res.data.message);
+            setIsloading(false);
+          } else {
+            toast.error("Somthing went wrong, try again");
+            setIsloading(false);
+          }
+        });
       }
       if (variant == "REGISTER") {
         let email = data.email;
         let password = data.password;
         let username = data.name;
-        await axios
-          .post("http://localhost:8000/auth/signup", {
-            email,
-            password,
-            username,
-          })
-          .then((res) => {
-            if (res.data.status == "success") {
-              setAuth({
-                ...auth,
-                user: res.data.user,
-                token: res.data.token,
-              });
-              const User = {
-                user: res.data.user,
-                token: res.data.token,
-              };
-              localStorage.setItem("auth", JSON.stringify(res.data));
-              console.log("saved", res.data);
-              toast.success("SignUp Successfull");
-              router.push("/");
-              setIsloading(false);
-            } else if (res.data.status == "Failed") {
-              toast.error(res.data.message);
-              setIsloading(false);
-            } else {
-              toast.error("Somthing went wrong, try again");
-              setIsloading(false);
-            }
-          });
+        await POST("/auth/signup", {
+          email,
+          password,
+          username,
+        }).then((res) => {
+          if (res.data.status == "success") {
+            setAuth({
+              ...auth,
+              user: res.data.user,
+              token: res.data.token,
+            });
+            const User = {
+              user: res.data.user,
+              token: res.data.token,
+            };
+            localStorage.setItem("auth", JSON.stringify(res.data));
+            console.log("saved", res.data);
+            toast.success("SignUp Successfull");
+            router.push("/");
+            setIsloading(false);
+          } else if (res.data.status == "Failed") {
+            toast.error(res.data.message);
+            setIsloading(false);
+          } else {
+            toast.error("Somthing went wrong, try again");
+            setIsloading(false);
+          }
+        });
       }
     } catch (error: any) {
       console.log("error", error.message);

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/context/auth";
 
 import { useDispatch } from "react-redux";
 import { deleteQuizs } from "@/store/quizSlice";
@@ -13,7 +12,6 @@ export default function useDeleteQuiz() {
   const [loading, setLoading] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [currentItem, setCurrentItem] = useState<QuizType | null>(null);
-  const [auth] = useAuth(); // get user
 
   // To Delete Popover
   const DelelePopover = (item: QuizType) => {
@@ -30,12 +28,8 @@ export default function useDeleteQuiz() {
   const onDeleteHandler = async (item: QuizType) => {
     try {
       setLoading(true);
-      const headers = {
-        Authorization: `Bearer ${auth?.token}`,
-      };
       const quiz = {
         Quiz: item,
-        headers: headers,
       };
       await dispatch<any>(deleteQuizs(quiz));
       setOpenDelete(false);

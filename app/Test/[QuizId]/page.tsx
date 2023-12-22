@@ -15,9 +15,8 @@ export default function Home({ params }: { params: { QuizId: string } }) {
   }
 
   const id = params.QuizId;
-  const token = auth.token;
-  /* eslint-disable react-hooks/rules-of-hooks */
-  const { isloading, Quiz } = useQuiz(id, token);
+  
+  const { isloading, Quiz } = useQuiz(id);
 
   return (
     <div>
@@ -35,7 +34,7 @@ export default function Home({ params }: { params: { QuizId: string } }) {
               {Quiz.title}
             </h3>
           </div>
-          <Questions data={Quiz.Question} quizId={id} token={token} />
+          <Questions data={Quiz.Question} quizId={id}  />
         </>
       ) : (
         <div></div>

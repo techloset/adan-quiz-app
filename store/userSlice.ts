@@ -1,20 +1,15 @@
-import { AuthQuizType, AuthResulttype, AuthTestQuiz } from "@/type";
+import { POST } from "@/lib/instance";
+import { AuthResulttype, AuthTestQuiz } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 
 export const getQuiz = createAsyncThunk(
   "user/getQuiz",
   async (item: AuthTestQuiz) => {
     try {
       let id = item.id;
-      let headers = item.headers;
-      const response = await axios.post(
-        "http://localhost:8000/user/getQuiz",
-        {
-          id,
-        },
-        { headers }
-      );
+      const response = await POST("/user/getQuiz", {
+        id,
+      });
       if (response.data.status === "success") {
         return response.data.quiz;
       } else {
@@ -37,14 +32,9 @@ export const getResult = createAsyncThunk(
   async (item: AuthResulttype) => {
     try {
       let id = item.id;
-      let headers = item.headers;
-      const response = await axios.post(
-        "http://localhost:8000/user/getResult",
-        {
-          id,
-        },
-        { headers }
-      );
+      const response = await POST("/user/getResult", {
+        id,
+      });
       if (response.data.status === "success") {
         return response.data.result;
       }
@@ -61,32 +51,24 @@ export const getResult = createAsyncThunk(
   }
 );
 
-export const getResults = createAsyncThunk(
-  "user/getResults",
-  async (headers:any) => {
-    try {
-      console.log(headers)
-      const response = await axios.post(
-        "http://localhost:8000/user/getResults",
-        {},
-        { headers }
-      );
-    console.log("res",response)
-      if (response.data.status === "success") {
-        return response.data.results;
-      }
-      console.log("================catch====================");
-      console.log(response.data);
-      console.log("====================================");
-      return null;
-    } catch (error: any) {
-      console.log("================catch====================");
-      console.log(error.message);
-      console.log("====================================");
-      throw error;
+export const getResults = createAsyncThunk("user/getResults", async () => {
+  try {
+    const response = await POST("/user/getResults", {});
+    console.log("res", response);
+    if (response.data.status === "success") {
+      return response.data.results;
     }
+    console.log("================catch====================");
+    console.log(response.data);
+    console.log("====================================");
+    return null;
+  } catch (error: any) {
+    console.log("================catch====================");
+    console.log(error.message);
+    console.log("====================================");
+    throw error;
   }
-);
+});
 
 export const userSlice = createSlice({
   name: "user",
