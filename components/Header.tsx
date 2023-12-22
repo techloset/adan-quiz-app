@@ -74,19 +74,27 @@ const Header = () => {
             >
               <Link href={"/Quizs"}>Quizs</Link>
             </li>
-            <li
-              className={` cursor-pointer  ${
-                pathname == "/History"
-                  ? "text-exact-purple dark:text-exact-yellow"
-                  : "text-exact-gray dark:text-white"
-              } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
-            >
-              {!auth?.user?.admin ? (
+            {!auth?.user?.admin ? (
+              <li
+                className={` cursor-pointer  ${
+                  pathname == "/History"
+                    ? "text-exact-purple dark:text-exact-yellow"
+                    : "text-exact-gray dark:text-white"
+                } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
+              >
                 <Link href={"/History"}>History</Link>
-              ) : (
+              </li>
+            ) : (
+              <li
+                className={` cursor-pointer  ${
+                  pathname == "/Admin"
+                    ? "text-exact-purple dark:text-exact-yellow"
+                    : "text-exact-gray dark:text-white"
+                } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
+              >
                 <Link href={"/Admin"}>Admin</Link>
-              )}
-            </li>
+              </li>
+            )}
           </ul>
 
           <div className="flex gap-4  items-center md:flex-row flex-col">

@@ -1,104 +1,20 @@
 "use client";
+
 import Button from "@/components/Button";
 import Input from "@/components/Input";
 
-import { useForm, FieldValues, SubmitHandler } from "react-hook-form";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-
-import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
-import { useAuth } from "@/context/auth";
-
-type Variant = "LOGIN" | "REGISTER";
+import useAuthHook from "@/hooks/useAuthhook";
 
 export default function Home() {
-  const router = useRouter();
-  const [variant, setVariant] = useState<Variant>("LOGIN");
-  const [isloading, setIsloading] = useState(false);
-  const [auth, setAuth] = useAuth();
-
   const {
+    toggleVariant,
+    onSubmit,
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm<FieldValues>({
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-    },
-  });
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    setIsloading(true);
-    try {
-      if (variant == "LOGIN") {
-        let email = data.email;
-        let password = data.password;
-        await axios
-          .post("http://localhost:8000/auth/login", { email, password })
-          .then((res) => {
-            if (res.data.status == "success") {
-              setAuth({
-                ...auth,
-                user: res.data.user,
-                token: res.data.token,
-              });
-              localStorage.setItem("auth", JSON.stringify(res.data));
-              toast.success("Login Successfull");
-              router.push("/");
-              setIsloading(false);
-            } else if (res.data.status == "Failed") {
-              toast.error(res.data.message);
-              setIsloading(false);
-            } else {
-              toast.error("Somthing went wrong, try again");
-              setIsloading(false);
-            }
-          });
-      }
-      if (variant == "REGISTER") {
-        let email = data.email;
-        let password = data.password;
-        let username = data.name;
-        await axios
-          .post("http://localhost:8000/auth/signup", {
-            email,
-            password,
-            username,
-          })
-          .then((res) => {
-            if (res.data.status == "success") {
-              setAuth({
-                ...auth,
-                user: res.data.user,
-                token: res.data.token,
-              });
-              localStorage.setItem("auth", JSON.stringify(res.data));
-              toast.success("SignUp Successfull");
-              router.push("/");
-              setIsloading(false);
-            } else if (res.data.status == "Failed") {
-              toast.error(res.data.message);
-              setIsloading(false);
-            } else {
-              toast.error("Somthing went wrong, try again");
-              setIsloading(false);
-            }
-          });
-      }
-    } catch (error: any) {
-      console.log("error", error.message);
-    }
-  };
-
-  const toggleVariant = useCallback(() => {
-    if (variant == "LOGIN") {
-      setVariant("REGISTER");
-    } else {
-      setVariant("LOGIN");
-    }
-  }, [variant]);
+    isloading,
+    variant,
+    errors,
+  } = useAuthHook();
 
   return (
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 ">

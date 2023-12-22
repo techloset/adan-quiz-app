@@ -1,4 +1,4 @@
-import { AuthQuizType, QuizType } from "@/type";
+import { AuthQuizType} from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -32,8 +32,14 @@ export const deleteQuizs = createAsyncThunk(
         { id },
         { headers }
       );
-
-      return res.data.quiz;
+      if (res.data.status === "success") {
+        return res.data.quiz;
+      } else {
+        console.log("================catch====================");
+        console.log(res.data.status);
+        console.log("====================================");
+        return null;
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -52,7 +58,14 @@ export const updateQuizs = createAsyncThunk(
         { id, title, description },
         { headers }
       );
-      return res.data.quiz;
+      if (res.data.status === "success") {
+        return res.data.quiz;
+      } else {
+        console.log("================catch====================");
+        console.log(res.data.status);
+        console.log("====================================");
+        return null;
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -74,25 +87,17 @@ export const quizSlice = createSlice({
     });
     // delete
     builder.addCase(deleteQuizs.fulfilled, (state, action) => {
-      const quizs = state.quizs;
-      const item = action.payload;
-      let filteredQuizs = quizs.filter((quiz: QuizType) => item.id !== quiz.id);
       let newState: any = {
         ...state,
-        quizs: filteredQuizs,
+        quizs: action.payload,
       };
       return newState;
     });
     // update
     builder.addCase(updateQuizs.fulfilled, (state, action) => {
-      const quizs = state.quizs;
-      const updatedquiz = action.payload;
-      const updatedquizs = quizs.map((quiz: QuizType) =>
-        quiz.id === updatedquiz.id ? updatedquiz : quiz
-      );
       let newState: any = {
         ...state,
-        quizs: updatedquizs,
+        quizs: action.payload,
       };
       return newState;
     });

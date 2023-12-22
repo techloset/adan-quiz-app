@@ -10,7 +10,6 @@ import Button from "@/components/Button";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 
-
 export default function Home({ params }: { params: { QuizId: string } }) {
   const [isloading, setIsloading] = useState(false);
   const [auth] = useAuth();
@@ -42,46 +41,51 @@ export default function Home({ params }: { params: { QuizId: string } }) {
   });
 
   const onSubmit = async (data: FormValues) => {
+    if (!data) {
+      return toast.error("Please fill all of the fields ");
+    }
     if (
-      data.question !== "" ||
-      data.correctOption !== "" ||
-      data.OptionOne !== "" ||
-      data.OptionTwo !== "" ||
-      data.OptionThree == ""
+      data.OptionOne === data.OptionTwo ||
+      data.OptionOne === data.OptionThree ||
+      data.OptionTwo === data.OptionThree
     ) {
-      setIsloading(true);
-      let id = params.QuizId;
-      let question = data.question;
-      let correctOption = data.correctOption;
-      let OptionOne = data.OptionOne;
-      let OptionTwo = data.OptionTwo;
-      let OptionThree = data.OptionThree;
-      const headers = {
-        Authorization: `Bearer ${auth?.token}`,
-      };
-      try {
-        const res = await axios.post(
-          "http://localhost:8000/question/addQuestion",
-          { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
-          { headers }
-        );
-        if (res.data.status === "success") {
-          toast.success("Successfully added Question");
-          setIsloading(false);
-        } else if (res.data.status === "Failed") {
-          toast.error(res.data.message);
-          setIsloading(false);
-        } else {
-          toast.error("Something went wrong, try again");
-          setIsloading(false);
-        }
-      } catch (error) {
-        toast.error("An error occurred. Please try again later.");
-        setIsloading(false);
-      } finally {
-        setIsloading(false);
-        form.reset();
+      return toast.error("Options must be unique");
+    }
+
+    if (
+      data.correctOption !== data.OptionOne &&
+      data.correctOption !== data.OptionTwo &&
+      data.correctOption !== data.OptionThree
+    ) {
+      return toast.error("CorrectOption must be one of the provided options");
+    }
+    setIsloading(true);
+    let id = params.QuizId;
+    let question = data.question;
+    let correctOption = data.correctOption;
+    let OptionOne = data.OptionOne;
+    let OptionTwo = data.OptionTwo;
+    let OptionThree = data.OptionThree;
+    const headers = {
+      Authorization: `Bearer ${auth?.token}`,
+    };
+    try {
+      const res = await axios.post(
+        "http://localhost:8000/question/addQuestion",
+        { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
+        { headers }
+      );
+      if (res.status == 204) {
+        toast.success("Successfully added Question");
+      } else {
+        toast.error("Something went wrong, try again ");
       }
+    } catch (error) {
+      toast.error("An error occurred. Please try again later.");
+      console.log(error)
+    } finally {
+      setIsloading(false);
+      form.reset();
     }
   };
 

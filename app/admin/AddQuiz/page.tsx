@@ -1,70 +1,10 @@
-"use client";
-import { useState } from "react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
+"use client"
 import Button from "@/components/Button";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useAuth } from "@/context/auth";
+
+import useAddQuiz from "@/hooks/Quiz/useAddQuiz";
 
 export default function Home() {
-  const [isloading, setIsloading] = useState(false);
-  const [auth] = useAuth();
-
-  const formSchema = z.object({
-    description: z
-      .string()
-      .min(10, { message: "description must be at least 10 characters." })
-      .max(160, {
-        message: "description must not be longer than 30 characters.",
-      }),
-    title: z.string().min(1),
-  });
-
-  type FormValues = z.infer<typeof formSchema>;
-
-  const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      description: "",
-      title: ""
-    },
-  });
-
- 
-
-  const onSubmit = async (data: FormValues) => {
-    setIsloading(true);
-    let description = data.description;
-    let title = data.title;
-    const headers = {
-      Authorization: `Bearer ${auth?.token}`,
-    };
-
-    try {
-      const res = await axios.post(
-        "http://localhost:8000/quiz/addQuiz",
-        { description, title,},
-        { headers }
-      );
-
-      if (res.data.status === "success") {
-        toast.success("Successfully added Quiz");
-        setIsloading(false);
-      } else if (res.data.status === "Failed") {
-        toast.error(res.data.message);
-        setIsloading(false);
-      } else {
-        toast.error("Something went wrong, try again");
-        setIsloading(false);
-      }
-    } catch (error) {
-      toast.error("An error occurred. Please try again later.");
-      setIsloading(false);
-    }
-  };
-
+  const { isloading, onSubmit, form } = useAddQuiz();
   return (
     <div className="flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">

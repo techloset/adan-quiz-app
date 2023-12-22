@@ -16,8 +16,8 @@ interface UpdateQuestinnModelProps {
   isOpen: boolean;
   onClose: () => void;
   data: QuestionType;
+  id:string
 }
-
 const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
   isOpen,
   onClose,
@@ -32,12 +32,12 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
     register,
     handleSubmit,
     formState: { errors },
-    setValue, 
+    setValue,
   } = useForm<FieldValues>({
     defaultValues: {
       id: data.id,
       Question: data.Question,
-      CorrectOption: data.CorrectOption,
+      CorrectOption: data.CorrectOption?.CorrectOption,
       OptionOne: data.OptionOne,
       OptionTwo: data.OptionTwo,
       OptionThree: data.OptionThree,
@@ -46,11 +46,10 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
   });
   useEffect(() => {
     setIsMounted(true);
-
     // Manually set default values
     setValue("id", data.id);
-    setValue("question", data.Question);
-    setValue("correctOption", data.CorrectOption);
+    setValue("Question", data.Question);
+    setValue("CorrectOption", data.CorrectOption?.CorrectOption);
     setValue("OptionOne", data.OptionOne);
     setValue("OptionTwo", data.OptionTwo);
     setValue("OptionThree", data.OptionThree);
@@ -67,45 +66,44 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
 
   const onUpdateHandler: SubmitHandler<FieldValues> = async (item) => {
     if (
-      !item.CorrectOption ||
-      !item.OptionOne ||
-      !item.OptionTwo ||
-      !item.OptionThree ||
-      !item.id ||
-      !item.Question
+      item.CorrectOption ||
+      item.OptionOne ||
+      item.OptionTwo ||
+      item.OptionThree ||
+      item.id ||
+      item.Question
     ) {
-      try {
-        setLoading(true);
-        const updatedQuestion = {
-          id: item.id as string,
-          Question: item.Question as string,
-          CorrectOption: item.CorrectOption as string,
-          OptionOne: item.OptionOne as string,
-          OptionTwo: item.OptionTwo as string,
-          OptionThree: item.OptionThree as string,
-          quizId: item.quizId as string,
-        };
-        const headers = {
-          Authorization: `Bearer ${auth?.token}`,
-        };
-        const question = {
-          Question: updatedQuestion,
-          headers: headers,
-        };
-        await dispatch<any>(updateQuestion(question));
-        data == null;
-        onClose();
-        toast.success("Successfully updated Quiz");
-      } catch (error: any) {
-        toast.error("Something went wrong please try again1");
-        console.log("-------------------------------------");
-        console.log(error.message);
-        console.log("-------------------------------------");
-      } finally {
-        setLoading(false);
+      if (
+        item.Question !== "" ||
+        item.OptionOne !== "" ||
+        item.OptionTwo !== "" ||
+        item.OptionThree !== ""
+      ) {
+        try {
+          setLoading(true);
+          const headers = {
+            Authorization: `Bearer ${auth?.token}`,
+          };
+          const question = {
+            Question: item,
+            headers: headers,
+          };
+          //  @ts-ignore
+          await dispatch<any>(updateQuestion(question));
+          data == null;
+          onClose();
+          toast.success("Successfully updated Quiz");
+        } catch (error: any) {
+          toast.error("Something went wrong please try again1");
+          console.log("-------------------------------------");
+          console.log(error.message);
+          console.log("-------------------------------------");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        toast.error("Please change the fields");
       }
-    } else {
-      toast.error("Please fill the fields");
     }
   };
 

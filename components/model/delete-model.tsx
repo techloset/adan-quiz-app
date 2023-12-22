@@ -8,8 +8,8 @@ interface DeleteModelProps {
   isOpen: boolean;
   onClose: () => void;
   onConfrim: () => void;
-  loading?:boolean;
-  title:String
+  loading?: boolean;
+  title: String;
 }
 
 const DeleteModel: React.FC<DeleteModelProps> = ({

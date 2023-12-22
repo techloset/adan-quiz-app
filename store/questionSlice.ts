@@ -1,38 +1,51 @@
-import { AuthQuestionType, QuestionType,} from "@/type";
+import { AuthQuestionType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getQuestions = createAsyncThunk("question/getQuestions", async (id:string) => {
-  try {
-    const response = await axios.post("http://localhost:8000/question/getQuestion",{ id },);
-    if (response.data.status === "success") {
-      return response.data.question;
-    } else {
+export const getQuestions = createAsyncThunk(
+  "question/getQuestions",
+  async (id: string) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/question/getQuestion",
+        { id }
+      );
+      if (response.data.status === "success") {
+        return response.data.question;
+      } else {
+        console.log("================catch====================");
+        console.log(response.data);
+        console.log("====================================");
+        return null;
+      }
+    } catch (error: any) {
       console.log("================catch====================");
-      console.log(response.data.status);
+      console.log(error.message);
       console.log("====================================");
-      return null;
+      throw error;
     }
-  } catch (error: any) {
-    console.log("================catch====================");
-    console.log(error.message);
-    console.log("====================================");
-    throw error;
   }
-});
+);
 export const deleteQuestion = createAsyncThunk(
   "question/deleteQuestion",
   async (item: AuthQuestionType) => {
     try {
       let id = item.Question.id;
+      let QuizId = item.id;
       let headers = item.headers;
       const res = await axios.post(
         "http://localhost:8000/question/deleteQuestion",
-        { id },
+        { id, QuizId },
         { headers }
       );
-
-      return res.data.question;
+      if (res.data.status === "success") {
+        return res.data.question;
+      } else {
+        console.log("================catch====================");
+        console.log(res.data.status);
+        console.log("====================================");
+        return null;
+      }
     } catch (error) {
       console.log("error", error);
     }
@@ -54,13 +67,20 @@ export const updateQuestion = createAsyncThunk(
         { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
         { headers }
       );
-      return res.data.question;
+      if (res.data.status === "success") {
+        return res.data.question;
+      } else {
+        console.log("================catch====================");
+        console.log(res.data.status);
+        console.log(res.data.message);
+        console.log("====================================");
+        return null;
+      }
     } catch (error) {
       console.log("error", error);
     }
   }
 );
-
 export const questionSlice = createSlice({
   name: "question",
   initialState: { question: [], error: null },
@@ -76,27 +96,17 @@ export const questionSlice = createSlice({
     });
     // delete
     builder.addCase(deleteQuestion.fulfilled, (state, action) => {
-      const questions = state.question;
-      const item = action.payload;
-      let filteredQuestions = questions.filter(
-        (question: QuestionType) => item.id !== question.id
-      );
       let newState: any = {
         ...state,
-        question: filteredQuestions,
+        question: action.payload,
       };
       return newState;
     });
     // update
     builder.addCase(updateQuestion.fulfilled, (state, action) => {
-      const questions = state.question;
-      const updatedquestion = action.payload;
-      const updatedquestions = questions .map((question: QuestionType) =>
-        question.id === updatedquestion.id ? updatedquestion : question
-      );
       let newState: any = {
         ...state,
-        question: updatedquestions,
+        question: action.payload,
       };
       return newState;
     });

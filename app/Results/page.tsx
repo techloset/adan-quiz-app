@@ -34,7 +34,6 @@ export default function Home() {
                     />
                   </td>
                 </tr>
-                {/* Add more rows as needed */}
               </tbody>
             </table>
           </div>
