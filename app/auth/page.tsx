@@ -6,6 +6,11 @@ import Input from "@/components/Input";
 import useAuthHook from "@/hooks/useAuthhook";
 
 export default function Home() {
+  console.log(
+    "process.env.NEXT_PUBLIC_API_ENDPOINT",
+    process.env.NEXT_PUBLIC_API_ENDPOINT
+  );
+
   const {
     toggleVariant,
     onSubmit,

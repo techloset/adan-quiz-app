@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_PORT,
+  baseURL: process.env.NEXT_PUBLIC_API_ENDPOINT,
 });
 
 const GET = Instance.get.bind(Instance);
