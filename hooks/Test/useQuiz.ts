@@ -29,7 +29,7 @@ export default function useQuiz(id: string, token: string) {
       setIsLoading(false);
     }
   };
-
+// @ts-ignore
   const Quiz: TestQuizType = useSelector(
     (store: RoootState) => store.user.quiz
   );

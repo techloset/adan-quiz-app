@@ -47,7 +47,7 @@ const Questions = ({
       );
       if (res.data.status == "success") {
         toast.success("Test has been taken");
-        return router.push(`/User/Results/${res.data.id}`);
+        return router.push(`/Results/${res.data.id}`);
       }
       toast.success("Something went wrong please try again");
       setIsloading(false);

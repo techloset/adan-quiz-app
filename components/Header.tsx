@@ -77,12 +77,12 @@ const Header = () => {
             {!auth?.user?.admin ? (
               <li
                 className={` cursor-pointer  ${
-                  pathname == "/History"
+                  pathname == "/Results"
                     ? "text-exact-purple dark:text-exact-yellow"
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/History"}>History</Link>
+                <Link href={"/Results"}>History</Link>
               </li>
             ) : (
               <li

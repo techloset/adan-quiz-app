@@ -63,16 +63,17 @@ export const getResult = createAsyncThunk(
 
 export const getResults = createAsyncThunk(
   "user/getResults",
-  async (item: AuthResulttype) => {
+  async (headers:any) => {
     try {
-      let id = item.id;
-      let headers = item.headers;
+      console.log(headers)
       const response = await axios.post(
-        "http://localhost:8000/user/getResult",
+        "http://localhost:8000/user/getResults",
+        {},
         { headers }
       );
+    console.log("res",response)
       if (response.data.status === "success") {
-        return response.data.result;
+        return response.data.results;
       }
       console.log("================catch====================");
       console.log(response.data);
@@ -90,12 +91,7 @@ export const getResults = createAsyncThunk(
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    quiz: {
-      id: "",
-      title: "",
-      description: "",
-      Question: [],
-    },
+    quiz: {},
     error: null,
     result: {},
     results: [],
@@ -118,7 +114,13 @@ export const userSlice = createSlice({
       };
       return newState;
     });
-    
+    builder.addCase(getResults.fulfilled, (state, action) => {
+      let newState: any = {
+        ...state,
+        results: action.payload,
+      };
+      return newState;
+    });
   },
 });
 

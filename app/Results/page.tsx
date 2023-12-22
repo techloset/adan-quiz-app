@@ -1,6 +1,21 @@
-import { Trash2 } from "lucide-react";
+"use client";
+import Loader from "@/components/Loader";
+import useAllResults from "@/hooks/Result/useAllResults";
+import { Navigation } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Moment from "react-moment";
 
 export default function Home() {
+  const { Results, isLoading } = useAllResults();
+  const router = useRouter();
+  if (isLoading) {
+    return (
+      <div className="flex h-screen justify-center items-center ">
+        <Loader />
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="flex flex-col justify-center items-center h-screen">
@@ -17,23 +32,31 @@ export default function Home() {
                   <th>Type</th>
                   <th>Total Marks</th>
                   <th>Marks</th>
-                  <th className="hover:text-rose-500 text-rose-700">
-                    Delete all
-                  </th>
+                  <th>See result</th>
                 </tr>
               </thead>
               <tbody>
-                <tr className="cursor-pointer ">
-                  <td className="p-4">Programming</td>
-                  <td className="p-4">10</td>
-                  <td className="p-4">8</td>
-                  <td className="p-4">
-                    <Trash2
-                      size={25}
-                      className="hover:text-rose-500 text-rose-700"
-                    />
-                  </td>
-                </tr>
+                {Results.map((item) => {
+                  return (
+                    <tr className="cursor-pointer text-center" key={item.id}>
+                      <td className="p-4 text-center">
+                        <Moment format="dd:m:yy hh:mm">
+                          {item.createdAt.toString()}
+                        </Moment>
+                      </td>
+                      <td className="p-4 text-center">{item.total}</td>
+                      <td className="p-4 text-center">{item.mark}</td>
+                      <td className="p-4 text-center   flex items-center justify-center">
+                        <div
+                          onClick={() => router.push(`/Results/${item.id}`)}
+                          className="p-2 text-white bg-green-500 hover:bg-green-600 w-auto rounded-md"
+                        >
+                          <Navigation size={20} />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
