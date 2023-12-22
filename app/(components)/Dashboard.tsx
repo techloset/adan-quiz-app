@@ -24,7 +24,7 @@ const Dashboard = () => {
           <p className=" md:text-[17px]text-[15px] xl:text-lg leading-[32px] lg:!w-[380px] !font-normal text-exact-gray dark:text-exact-white">
             try our latest quiz to improve and learn
             <br className="hidden xl:inline" /> new and exciting things and
-            reach new height's. Your education is our first priority.
+            reach new height&apos;s. Your education is our first priority.
           </p>
           {auth?.user?.admin && (
             <Link href={"/Admin/AddQuiz"}>

@@ -93,7 +93,7 @@ export default function Home({ params }: { params: { QuizId: string } }) {
     <div className="flex min-h-full flex-col justify-center pb-12 sm:px-6 lg:px-8 ">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h1 className="mt-6 text-center text-3xl font-bold tracking-tight dark:text-white text-gray-900">
-          Add a new Question's new in category
+          Add a new Question&apos;s new in category
         </h1>
       </div>
       <div className=" mt-8 sm:mx-auto sm:w-full sm:max-w-3xl ">
