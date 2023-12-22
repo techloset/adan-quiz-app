@@ -46,6 +46,7 @@ export default function useAuthHook() {
           } else if (res.data.status == "Failed") {
             toast.error(res.data.message);
             setIsloading(false);
+            console.log(res)
           } else {
             toast.error("Somthing went wrong, try again");
             setIsloading(false);

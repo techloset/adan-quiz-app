@@ -27,7 +27,7 @@ const Dashboard = () => {
             reach new height&apos;s. Your education is our first priority.
           </p>
           {auth?.user?.admin && (
-            <Link href={"/Admin/AddQuiz"}>
+            <Link href={"/admin/AddQuiz"}>
               <button
                 className={`w-fit relative shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl cursor-pointer`}
               >

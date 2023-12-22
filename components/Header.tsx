@@ -17,8 +17,9 @@ const Header = () => {
   const pathname = usePathname();
   const [auth] = useAuth();
   useEffect(() => {
-    if (auth.token)
+    if (auth.token){
       Instance.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
+    }
   }, []);
   return (
     <>
@@ -96,7 +97,7 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/Admin"}>Admin</Link>
+                <Link href={"/admin"}>Admin</Link>
               </li>
             )}
           </ul>
@@ -111,7 +112,7 @@ const Header = () => {
               } md:max-w-fit leading-[26px] font-semibold md:shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl text-white`}
             >
               {!auth?.user?.email ? (
-                <Link href={"/Auth"}> Log In / Sign Up</Link>
+                <Link href={"/auth"}> Log In / Sign Up</Link>
               ) : (
                 <p onClick={() => setOpen(true)}>Log out</p>
               )}

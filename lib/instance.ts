@@ -1,6 +1,6 @@
 import axios from "axios";
 const Instance = axios.create({
-  baseURL: process.env.PORT,
+  baseURL: process.env.NEXT_PUBLIC_PORT,
 });
 export default Instance;
 
