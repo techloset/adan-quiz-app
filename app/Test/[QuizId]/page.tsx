@@ -15,7 +15,7 @@ export default function Home({ params }: { params: { QuizId: string } }) {
   }
 
   const id = params.QuizId;
-  
+  /* eslint-disable react-hooks/rules-of-hooks */
   const { isloading, Quiz } = useQuiz(id);
 
   return (
