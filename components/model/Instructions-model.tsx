@@ -42,14 +42,14 @@ const InstructionModel: React.FC<InstructionModelProps> = ({
             <div className="flex gap-2 items-center justify-start">
               <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
               <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
-                You will be asked 10 questions one after another.
+                You will be asked questions one after another.
               </p>
             </div>
 
             <div className="flex gap-2 items-center justify-start">
               <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
               <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
-                Each question has four options. You can choose only one option.
+                Each question has three options. You can choose only one option.
               </p>
             </div>
 
@@ -63,7 +63,7 @@ const InstructionModel: React.FC<InstructionModelProps> = ({
             <div className="flex gap-2 items-center justify-start">
               <div className="w-2 h-2 rounded-full bg-slate-950 dark:bg-white" />
               <p className="text-sm text-gray-900 dark:text-stone-100 font-light ">
-                If you attempt more then 4 questions correct then you hav passed
+                If you attempt more then half questions correct then you have passed
                 other wise fail.
               </p>
             </div>

@@ -7,15 +7,15 @@ import { useRouter } from "next/navigation";
 const Quizs = () => {
   const [hover, setHover] = useState(0);
   const router = useRouter()
-  const { isloading, Quiz } = getQuizs();
+  const { isLoading, Quiz } = getQuizs();
 
   return (
     <div className=" relative pb-[100px] lg:pb-[200px] -mt-16">
-      {isloading ? (
+      {isLoading ? (
         <div className="flex justify-center items-center w-full">
           <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
         </div>
-      ) : (
+      ) : Quiz.length !== 0 ? (
         <div className={`mx-[24px] lg:mx-[80px]  xl:mx-[160px]`}>
           <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center text-center gap-x-8 gap-y-[60px]">
             {Quiz?.map((item: QuizType, index: number) => {
@@ -68,7 +68,7 @@ const Quizs = () => {
                       </p>
                     </div>
                     <div
-                    onClick={()=>router.push(`/Test/${item.id}`)}
+                    onClick={()=>router.push(`/test/${item.id}`)}
                       className={`dark:bg-[#020E2D] p-[17px] rounded-full hover:relative hover:left-1 hover:bg-[#F3F4F6] dark:fill-blue-600 fill-blue-600 ${
                         Hovered
                           ? `bg-exact-white fill-exact-purple dark:bg-exact-white/100 `
@@ -93,7 +93,10 @@ const Quizs = () => {
             })}
           </div>
         </div>
-      )}
+      ):(
+      <div className="flex justify-center items-center w-full">
+      <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
+    </div>)}
     </div>
   );
 };

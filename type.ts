@@ -24,7 +24,7 @@ export interface QuestionType {
 }
 export interface AuthQuestionType {
   Question: QuestionType;
-  id?: string;
+  QuizId:string
 }
 
 export interface AuthTestQuiz {

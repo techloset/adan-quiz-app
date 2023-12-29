@@ -77,7 +77,7 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               }  cursor-pointer  text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/Quizs"}>Quizs</Link>
+              <Link href={"/quizs"}>Quizs</Link>
             </li>
             {!auth?.user?.admin ? (
               <li
@@ -87,7 +87,7 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/Results"}>History</Link>
+                <Link href={"/results"}>History</Link>
               </li>
             ) : (
               <li

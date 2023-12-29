@@ -11,7 +11,7 @@ export default function AdminLayout({
   const [auth] = useAuth();
   const router = useRouter();
   if (!auth.user?.email) {
-    router.push("/Auth");
+    router.push("/auth");
   }
   if (auth.user?.admin == true && auth.user.email == "admin@gmail.com") {
     return <>{children}</>;

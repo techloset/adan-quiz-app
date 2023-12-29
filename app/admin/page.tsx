@@ -28,7 +28,7 @@ export default function Home() {
   } = useDeleteQuiz();
   const { openUpdate, currentUpdateItem, UpdatePopover, setOpenUpdate } =
     useUpdateQuiz();
-  const { Quiz, isloading } = useQuizs();
+  const { Quiz, isLoading } = useQuizs();
 
   return (
     <div>
@@ -41,7 +41,7 @@ export default function Home() {
         </h3>
       </div>
       {/* Quizs */}
-      {isloading ? (
+      {isLoading ? (
         <div className="flex justify-center items-center w-full">
           <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
         </div>
@@ -142,7 +142,7 @@ export default function Home() {
                                 ? `bg-exact-white fill-exact-purple dark:bg-slate-950  `
                                 : "bg-[#F3F4F6]"
                             } `}
-                            onClick={() => router.push(`/Admin/${item.id}`)}
+                            onClick={() => router.push(`/admin/${item.id}`)}
                           >
                             <HelpCircle size={20} />
                           </div>
@@ -153,7 +153,7 @@ export default function Home() {
                                 : "bg-[#F3F4F6]"
                             } `}
                             onClick={() =>
-                              router.push(`/Admin/${item.id}/AddQuestion`)
+                              router.push(`/admin/${item.id}/addQuestion`)
                             }
                           >
                             <Plus size={20} />
@@ -168,10 +168,10 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center justify-center text center gap-2 text-xl italic">
+        <div className="flex items-center justify-center text-center gap-2 text-xl italic">
           <h4>You haven&apos;t added any Quiz&apos;s to add Quiz</h4>
           <Link
-            href={"/Admin/AddQuiz"}
+            href={"/admin/addQuiz"}
             className="text-blue-500 dark:text-exact-red cursor-pointer"
           >
             Add Quiz?

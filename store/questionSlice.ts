@@ -1,24 +1,30 @@
 import { POST } from "@/lib/instance";
 import { AuthQuestionType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+
+const withLoading = async (asyncFn: () => Promise<any>, dispatch: any) => {
+  dispatch(questionSlice.actions.setLoading(true));
+  try {
+    const response = await asyncFn();
+    return response.data.status === "success" ? response.data.question : null;
+  } catch (error: any) {
+    console.log("================catch====================");
+    console.log(error.message);
+    console.log("====================================");
+    throw error;
+  } finally {
+    dispatch(questionSlice.actions.setLoading(false));
+  }
+};
 
 export const getQuestions = createAsyncThunk(
   "question/getQuestions",
-  async (id: string) => {
+  async (id: string, { dispatch }) => {
     try {
-      const response = await axios.post(
-        "https://spotless-plum-parka.cyclic.app/question/getQuestion",
-        { id }
+      return await withLoading(
+        () => POST("/question/getQuestion", { id }),
+        dispatch
       );
-      if (response.data.status === "success") {
-        return response.data.question;
-      } else {
-        console.log("================catch====================");
-        console.log(response.data);
-        console.log("====================================");
-        return null;
-      }
     } catch (error: any) {
       console.log("================catch====================");
       console.log(error.message);
@@ -32,7 +38,7 @@ export const deleteQuestion = createAsyncThunk(
   async (item: AuthQuestionType) => {
     try {
       let id = item.Question.id;
-      let QuizId = item.id;
+      let QuizId = item.QuizId;
       const res = await POST("/question/deleteQuestion", { id, QuizId });
       if (res.data.status === "success") {
         return res.data.question;
@@ -57,10 +63,16 @@ export const updateQuestion = createAsyncThunk(
       let OptionOne = item.Question.OptionOne;
       let OptionTwo = item.Question.OptionTwo;
       let OptionThree = item.Question.OptionThree;
-      const res = await POST(
-        "https://spotless-plum-parka.cyclic.app/question/updateQuestion",
-        { id, question, correctOption, OptionOne, OptionTwo, OptionThree },
-      );
+      let QuizId = item.QuizId
+      const res = await POST("/question/updateQuestion", {
+        id,
+        question,
+        correctOption,
+        OptionOne,
+        OptionTwo,
+        OptionThree,
+        QuizId
+      });
       if (res.data.status === "success") {
         return res.data.question;
       } else {
@@ -77,14 +89,19 @@ export const updateQuestion = createAsyncThunk(
 );
 export const questionSlice = createSlice({
   name: "question",
-  initialState: { question: [], error: null },
-  reducers: {},
+  initialState: { question: [], error: null, loading: false },
+  reducers: {
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     // get
     builder.addCase(getQuestions.fulfilled, (state, action) => {
       let newState: any = {
         ...state,
         question: action.payload,
+        loading: false,
       };
       return newState;
     });
@@ -106,5 +123,7 @@ export const questionSlice = createSlice({
     });
   },
 });
+export const { setLoading } = questionSlice.actions;
 
+export const selectLoading = (state: { question: any }) => state.question.loading;
 export default questionSlice.reducer;

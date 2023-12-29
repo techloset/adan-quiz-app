@@ -1,19 +1,15 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RoootState } from "@/store/store";
-import { getQuiz } from "@/store/userSlice";
+import { getQuiz, selectLoading } from "@/store/userSlice";
 
 import { TestQuizType } from "@/type";
 export default function useQuiz(id: string) {
-  const [isloading, setIsLoading] = useState(false);
-
   const dispatch = useDispatch(); // update the data
-  
 
   const getQuizHandler = async () => {
     try {
-      setIsLoading(true);
       let item = {
         id,
       };
@@ -22,17 +18,16 @@ export default function useQuiz(id: string) {
       console.log("================catch====================");
       console.log(error);
       console.log("====================================");
-    } finally {
-      setIsLoading(false);
     }
   };
-// @ts-ignore
+  // @ts-ignore
   const Quiz: TestQuizType = useSelector(
     (store: RoootState) => store.user.quiz
   );
+  const isLoading = useSelector((state: RoootState) => selectLoading(state));
   useEffect(() => {
     getQuizHandler();
   }, []);
 
-  return { Quiz, isloading };
+  return { Quiz, isLoading };
 }

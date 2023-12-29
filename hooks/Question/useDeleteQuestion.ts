@@ -23,7 +23,7 @@ export default function useDeleteQuestion(params: { QuizId: string }) {
   const onDeleteHandler = async (item: QuestionType) => {
     try {
       setLoading(true);
-      
+      console.log("hooks params",params.QuizId)
       const quiz = {
         Question: item,
         QuizId:params.QuizId,

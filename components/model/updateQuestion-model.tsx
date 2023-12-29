@@ -15,12 +15,13 @@ interface UpdateQuestinnModelProps {
   isOpen: boolean;
   onClose: () => void;
   data: QuestionType;
-  id:string
+  id: string;
 }
 const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
   isOpen,
   onClose,
   data,
+  id,
 }) => {
   const [isMounted, setIsMounted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -81,6 +82,7 @@ const UpdateQuestionModel: React.FC<UpdateQuestinnModelProps> = ({
           setLoading(true);
           const question = {
             Question: item,
+            QuizId: id,
           };
           //  @ts-ignore
           await dispatch<any>(updateQuestion(question));

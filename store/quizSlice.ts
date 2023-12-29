@@ -2,17 +2,24 @@ import { GET, POST } from "@/lib/instance";
 import { AuthQuizType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-export const getQuizs = createAsyncThunk("quiz/getQuizs", async () => {
+const withLoading = async (asyncFn: () => Promise<any>, dispatch: any) => {
+  dispatch(quizSlice.actions.setLoading(true))
   try {
-    const response = await GET("/quiz/getQuiz");
-    if (response.data.status === "success") {
-      return response.data.quizs;
-    } else {
-      console.log("================catch====================");
-      console.log(response.data.status);
-      console.log("====================================");
-      return null;
-    }
+    const response = await asyncFn();
+    return response.data.status === "success" ? response.data.quizs : null;
+  } catch (error: any) {
+    console.log("================catch====================");
+    console.log(error.message);
+    console.log("====================================");
+    throw error;
+  } finally {
+    dispatch(quizSlice.actions.setLoading(false))
+  }
+};
+
+export const getQuizs = createAsyncThunk("quiz/getQuizs", async (_, { dispatch }) => {
+  try {
+    return await withLoading(() => GET("/quiz/getQuiz"), dispatch);
   } catch (error: any) {
     console.log("================catch====================");
     console.log(error.message);
@@ -68,14 +75,19 @@ export const updateQuizs = createAsyncThunk(
 
 export const quizSlice = createSlice({
   name: "quiz",
-  initialState: { quizs: [], error: null },
-  reducers: {},
+  initialState: { quizs: [], error: null, loading: false },
+  reducers: {
+    setLoading: (state, action) => {
+      state.loading = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     // get
     builder.addCase(getQuizs.fulfilled, (state, action) => {
       let newState: any = {
         ...state,
         quizs: action.payload,
+        loading: false,
       };
       return newState;
     });
@@ -97,5 +109,7 @@ export const quizSlice = createSlice({
     });
   },
 });
+export const { setLoading } = quizSlice.actions;
 
+export const selectLoading = (state: { quiz: any}) => state.quiz.loading;
 export default quizSlice.reducer;

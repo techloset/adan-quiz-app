@@ -51,7 +51,7 @@ export default function useAddQuiz() {
         { description, title },
       );
       if (res.data.status === "success") {
-       await router.push(`/Admin/${res.data.quiz.id}/AddQuestion`)
+       await router.push(`/admin/${res.data.quiz.id}/addQuestion`)
         toast.success("Successfully added Quiz");
       } else if (res.data.status === "Failed") {
         toast.error(res.data.message);

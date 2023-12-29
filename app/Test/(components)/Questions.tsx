@@ -1,4 +1,4 @@
-"use cilent";
+"use client";
 import Button from "@/components/Button";
 import { useForm } from "react-hook-form";
 import React, { useState } from "react";
@@ -33,16 +33,14 @@ const Questions = ({
         return !selectedOption;
       });
       if (isAnyOptionNotSelected) {
+        setIsloading(false);
         return toast.error("Please answer every question first");
       }
-     
-      const res = await POST(
-        "/user/addResult",
-        { quizId, selectedOptions },
-      );
+
+      const res = await POST("/user/addResult", { quizId, selectedOptions });
       if (res.data.status == "success") {
         toast.success("Test has been taken");
-        return router.push(`/Results/${res.data.id}`);
+        return router.push(`/results/${res.data.id}`);
       }
       toast.success("Something went wrong please try again");
       setIsloading(false);
@@ -66,58 +64,74 @@ const Questions = ({
   };
 
   return (
-    <div className="flex flex-col justify-center items-center gap-4 mb-10">
-      <div className="flex flex-col justify-center items-center gap-4">
-        {data?.map((item: QuestionType, index: number) => {
-          return (
-            <div className="flex flex-col  gap-4" key={item.id}>
-              <h1 className="text-3xl dark:text-stone-200 text-slate-900 font-semibold">
-                Question no {index + 1}
-              </h1>
-              <div className="w-[370px] lg:w-[800px] md:w-[600px] border-2 border-primary p-2 rounded-xl dark:bg-slate-900 bg-stone-200 shadow-2xl">
-                <h3 className="px-4 text-blue-700 dark:text-blue-300 font-medium text-xl italic py-4 flex gap-2">
-                  <p className="dark:text-white text-slate-950">
-                    {index + 1}
-                    {") "}
-                  </p>
-                  {item.Question}
-                </h3>
-                <form>
-                  <div className="flex gap-4 ml-2 flex-col">
-                    {[item.OptionOne, item.OptionTwo, item.OptionThree].map(
-                      (option: string, optionIndex: number) => (
-                        <div
-                          key={optionIndex}
-                          className="flex items-center space-x-2 cursor-pointer"
-                        >
-                          <input
-                            disabled={isloading}
-                            type="radio"
-                            value={option}
-                            {...register(`question_${index}_option`)}
-                            onChange={() =>
-                              handleOptionChange(item.Question, item.id, option)
-                            }
-                            className="h-6 w-6"
-                          />
-                          <label className={`text-lg text-cyan-700`}>
-                            {option}
-                          </label>
-                        </div>
-                      )
-                    )}
+    <div>
+      {data?.length !== 0 ? (
+        <div className="flex flex-col justify-center items-center gap-4 mb-10">
+          <div className="flex flex-col justify-center items-center gap-4">
+            {data?.map((item: QuestionType, index: number) => {
+              return (
+                <div className="flex flex-col  gap-4" key={item.id}>
+                  <h1 className="text-3xl dark:text-stone-200 text-slate-900 font-semibold">
+                    Question no {index + 1}
+                  </h1>
+                  <div className="w-[370px] lg:w-[800px] md:w-[600px] border-2 border-primary p-2 rounded-xl dark:bg-slate-900 bg-stone-200 shadow-2xl">
+                    <h3 className="px-4 text-blue-700 dark:text-blue-300 font-medium text-xl italic py-4 flex gap-2">
+                      <p className="dark:text-white text-slate-950">
+                        {index + 1}
+                        {") "}
+                      </p>
+                      {item.Question}
+                    </h3>
+                    <form>
+                      <div className="flex gap-4 ml-2 flex-col">
+                        {[item.OptionOne, item.OptionTwo, item.OptionThree].map(
+                          (option: string, optionIndex: number) => (
+                            <div
+                              key={optionIndex}
+                              className="flex items-center space-x-2 cursor-pointer"
+                            >
+                              <input
+                                disabled={isloading}
+                                type="radio"
+                                value={option}
+                                {...register(`question_${index}_option`)}
+                                onChange={() =>
+                                  handleOptionChange(
+                                    item.Question,
+                                    item.id,
+                                    option
+                                  )
+                                }
+                                className="h-6 w-6"
+                              />
+                              <label className={`text-lg text-cyan-700`}>
+                                {option}
+                              </label>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </form>
                   </div>
-                </form>
-              </div>
+                </div>
+              );
+            })}
+          </div>
+          {data && (
+            <div className="max-w-[800px] w-full">
+              <Button fullWidth onClick={onSave} disabled={isloading}>
+                Completed Test
+              </Button>
             </div>
-          );
-        })}
-      </div>
-      <div className="max-w-[800px] w-full">
-        <Button fullWidth onClick={onSave}  disabled={isloading}>
-          Completed Test
-        </Button>
-      </div>
+          )}
+        </div>
+      ) : (
+        <div className="my-4 flex justify-center items-center">
+          <h4 className="text center text-xl italic">
+            This Quiz does not have any question&apos;s please try another one
+          </h4>
+        </div>
+      )}
     </div>
   );
 };

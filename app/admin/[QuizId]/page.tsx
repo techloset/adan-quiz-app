@@ -15,7 +15,7 @@ import useQuestions from "@/hooks/Question/useQuestions";
 import useDeleteQuestion from "@/hooks/Question/useDeleteQuestion";
 import useUpdateQuestion from "@/hooks/Question/useUpdateQuestion";
 
-const Qestions = ({ params }: { params: { QuizId: string } }) => {
+const Questions = ({ params }: { params: { QuizId: string } }) => {
   const [isOpen, setIsOpen] = useState(["one"]);
   // dropdown
   const DropDown = ({ id }: { id: string }) => {
@@ -25,7 +25,7 @@ const Qestions = ({ params }: { params: { QuizId: string } }) => {
       setIsOpen((Item) => Item.filter((item) => item !== id));
     }
   };
-  const { isloading, Question } = useQuestions(params);
+  const { isLoading, Question } = useQuestions(params);
   const {
     onDeleteHandler,
     DelelePopover,
@@ -49,7 +49,7 @@ const Qestions = ({ params }: { params: { QuizId: string } }) => {
           </h3>
         </div>
         {/* Questions */}
-        {isloading ? (
+        {isLoading ? (
           <div className="flex justify-center items-center w-full">
             <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
           </div>
@@ -162,7 +162,7 @@ const Qestions = ({ params }: { params: { QuizId: string } }) => {
           <div className="flex items-center justify-center text center gap-2 text-xl italic">
             <h4>You haven&apos;t added any Quiz&apos;s to add Quiz</h4>
             <Link
-              href={`/Admin/${params.QuizId}/AddQuestion`}
+              href={`/admin/${params.QuizId}/addQuestion`}
               className="text-blue-500 dark:text-exact-red cursor-pointer"
             >
               Add Question?
@@ -174,4 +174,4 @@ const Qestions = ({ params }: { params: { QuizId: string } }) => {
   }
 };
 
-export default Qestions;
+export default Questions;
