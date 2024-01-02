@@ -14,7 +14,6 @@ interface User {
   email: string;
   admin: boolean;
 }
-
 interface AuthContextType {
   user: User | null;
   token: string | null;
