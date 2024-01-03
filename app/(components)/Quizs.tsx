@@ -10,7 +10,7 @@ const Quizs = () => {
   const { isLoading, Quiz } = getQuizs();
 
   return (
-    <div className=" relative pb-[100px] lg:pb-[200px] -mt-16">
+    <div className=" relative pb-[100px] lg:pb-[200px] ">
       {isLoading ? (
         <div className="flex justify-center items-center w-full">
           <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
