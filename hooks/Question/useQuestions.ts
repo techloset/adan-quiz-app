@@ -6,7 +6,7 @@ import {
   getQuestions as getstoreQuestion,
   selectLoading,
 } from "@/store/questionSlice";
-import { RoootState } from "@/store/store"; 
+import { RootState } from "@/store/store";
 
 import { QuestionType } from "@/type";
 
@@ -23,9 +23,9 @@ export default function useQuestions(params: { QuizId: string }) {
     }
   };
   const Question: QuestionType[] = useSelector(
-    (store: RoootState) => store.question.question
+    (store: RootState) => store.question.question
   );
-  const isLoading = useSelector((state: RoootState) => selectLoading(state));
+  const isLoading = useSelector((state: RootState) => selectLoading(state));
   useEffect(() => {
     console.log("isLoading:", isLoading);
     getQuestionHandler();

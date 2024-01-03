@@ -35,6 +35,7 @@ const Header = () => {
               openMenu ? "border-b-2" : "border-none"
             } border-exact-black/25 dark:border-exact-white pb-4 md:border-none `}
           >
+            <div className="flex gap-[1px] ">
             <Image
               src="/Logo.svg"
               alt="Logo"
@@ -42,6 +43,11 @@ const Header = () => {
               height={100}
               className="relative top-4 -left-8"
             />
+             <div className="block lg:hidden relative top-8 -left-8">
+              <ThemeToggler />
+            </div>
+            </div>
+            
             <div
               onClick={() => setOpenMenu(openMenu === false ? true : false)}
               className="md:hidden cursor-pointer"
@@ -53,6 +59,7 @@ const Header = () => {
                 width={40}
                 height={40}
               />
+
             </div>
           </div>
           <ul

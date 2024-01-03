@@ -1,9 +1,9 @@
 "use client";
 
-import { RoootState } from "@/store/store";
+import { RootState } from "@/store/store";
 import { getResults, selectResultLoading } from "@/store/userSlice";
 import { ResultType } from "@/type";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function useAllResults() {
@@ -19,10 +19,12 @@ export default function useAllResults() {
     }
   };
   const Results: ResultType[] = useSelector(
-    (store: RoootState) => store.user.results
+    (store: RootState) => store.user.results
   );
-  const isLoading = useSelector((state: RoootState) => selectResultLoading(state));
-  
+  const isLoading = useSelector((state: RootState) =>
+    selectResultLoading(state)
+  );
+
   useEffect(() => {
     ResultHandler();
   }, []);

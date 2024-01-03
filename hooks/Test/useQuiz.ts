@@ -1,7 +1,7 @@
 "use client";
-import { useEffect} from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RoootState } from "@/store/store";
+import { RootState } from "@/store/store";
 import { getQuiz, selectLoading } from "@/store/userSlice";
 
 import { TestQuizType } from "@/type";
@@ -21,10 +21,8 @@ export default function useQuiz(id: string) {
     }
   };
   // @ts-ignore
-  const Quiz: TestQuizType = useSelector(
-    (store: RoootState) => store.user.quiz
-  );
-  const isLoading = useSelector((state: RoootState) => selectLoading(state));
+  const Quiz: TestQuizType = useSelector((store: RootState) => store.user.quiz);
+  const isLoading = useSelector((state: RootState) => selectLoading(state));
   useEffect(() => {
     getQuizHandler();
   }, []);

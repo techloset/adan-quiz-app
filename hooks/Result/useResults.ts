@@ -1,6 +1,6 @@
 "use client";
 
-import { RoootState } from "@/store/store";
+import { RootState } from "@/store/store";
 import { getResult } from "@/store/userSlice";
 import { ResultType } from "@/type";
 import { useEffect, useState } from "react";
@@ -12,7 +12,7 @@ export default function useResults(id: string) {
 
   const ResultHandler = () => {
     try {
-      setIsLoading(true); 
+      setIsLoading(true);
       let item = {
         id,
       };
@@ -27,7 +27,7 @@ export default function useResults(id: string) {
   };
   // @ts-ignore
   const Result: ResultType = useSelector(
-    (store: RoootState) => store.user.result
+    (store: RootState) => store.user.result
   );
   useEffect(() => {
     ResultHandler();
