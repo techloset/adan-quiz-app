@@ -99,7 +99,7 @@ export default function Home({ params }: { params: { resultId: string } }) {
           <div className="flex flex-col gap-2">
           {Result.ResultHistory?.map((item: any, index: number) => {
             return (
-              <div className="grid grid-cols-1 gap-2 w-[90%] mx-auto dark:bg-slate-950 bg-stone-300 rounded-lg p-3">
+              <div key={item.id} className="grid grid-cols-1 gap-2 w-[90%] mx-auto dark:bg-slate-950 bg-stone-300 rounded-lg p-3">
                 <h3>
                   {" "}
                   {index + 1}{") "}{item.Question}
