@@ -81,7 +81,7 @@ export default function useAuthHook() {
             toast.error(res.data.message);
             setIsloading(false);
           } else {
-            toast.error("Somthing went wrong, try again");
+            toast.error("Something went wrong, try again");
             setIsloading(false);
           }
         });

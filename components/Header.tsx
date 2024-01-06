@@ -74,7 +74,7 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               } cursor-pointer  text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/"}>Home</Link>
+              <Link href={"/"} onClick={()=> setOpenMenu(!openMenu)}>Home</Link>
             </li>
 
             <li
@@ -84,7 +84,7 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               }  cursor-pointer  text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/quizs"}>Quizs</Link>
+              <Link href={"/quizs"} onClick={()=> setOpenMenu(false)}>Quizs</Link>
             </li>
             {!auth?.user?.admin ? (
               <li
@@ -94,7 +94,7 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/results"}>History</Link>
+                <Link href={"/results"} onClick={()=> setOpenMenu(false)}>History</Link>
               </li>
             ) : (
               <li
@@ -104,7 +104,7 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/admin"}>Admin</Link>
+                <Link href={"/admin"} onClick={()=> setOpenMenu(false)}>Admin</Link>
               </li>
             )}
           </ul>
@@ -119,7 +119,7 @@ const Header = () => {
               } md:max-w-fit leading-[26px] font-semibold md:shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl text-white`}
             >
               {!auth?.user?.email ? (
-                <Link href={"/auth"}> Log In / Sign Up</Link>
+                <Link href={"/auth"} onClick={()=> setOpenMenu(false)}> Log In / Sign Up</Link>
               ) : (
                 <p onClick={() => setOpen(true)}>Log out</p>
               )}
