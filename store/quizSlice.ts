@@ -3,7 +3,7 @@ import { AuthQuizType } from "@/type";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const withLoading = async (asyncFn: () => Promise<any>, dispatch: any) => {
-  dispatch(quizSlice.actions.setLoading(true))
+  dispatch(quizSlice.actions.setLoading(true));
   try {
     const response = await asyncFn();
     return response.data.status === "success" ? response.data.quizs : null;
@@ -13,20 +13,23 @@ const withLoading = async (asyncFn: () => Promise<any>, dispatch: any) => {
     console.log("====================================");
     throw error;
   } finally {
-    dispatch(quizSlice.actions.setLoading(false))
+    dispatch(quizSlice.actions.setLoading(false));
   }
 };
 
-export const getQuizs = createAsyncThunk("quiz/getQuizs", async (_, { dispatch }) => {
-  try {
-    return await withLoading(() => GET("/quiz/getQuiz"), dispatch);
-  } catch (error: any) {
-    console.log("================catch====================");
-    console.log(error.message);
-    console.log("====================================");
-    throw error;
+export const getQuizs = createAsyncThunk(
+  "quiz/getQuizs",
+  async (_, { dispatch }) => {
+    try {
+      return await withLoading(() => GET("/quiz/getQuiz"), dispatch);
+    } catch (error: any) {
+      console.log("================catch====================");
+      console.log(error.message);
+      console.log("====================================");
+      throw error;
+    }
   }
-});
+);
 
 export const deleteQuizs = createAsyncThunk(
   "quiz/deleteQuizs",
@@ -35,7 +38,7 @@ export const deleteQuizs = createAsyncThunk(
       let id = item.Quiz.id;
       const res = await POST("/quiz/deleteQuiz", { id });
       if (res.data.status === "success") {
-        return res.data.quiz;
+        return res.data.quizs;
       } else {
         console.log("================catch====================");
         console.log(res.data.status);
@@ -111,5 +114,5 @@ export const quizSlice = createSlice({
 });
 export const { setLoading } = quizSlice.actions;
 
-export const selectLoading = (state: { quiz: any}) => state.quiz.loading;
+export const selectLoading = (state: { quiz: any }) => state.quiz.loading;
 export default quizSlice.reducer;

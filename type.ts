@@ -8,6 +8,7 @@ export interface QuizType {
 
 export interface AuthQuizType {
   Quiz: QuizType;
+  token?:any
 }
 export interface CorrectOptionType {
   id: string;

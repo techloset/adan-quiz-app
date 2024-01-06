@@ -2,8 +2,10 @@
 import Loader from "@/components/Loader";
 import useResults from "@/hooks/Result/useResults";
 import { Check, XCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
 export default function Home({ params }: { params: { resultId: string } }) {
   let id = params.resultId;
+  const router = useRouter();
   const { Result, isLoading } = useResults(id);
 
   if (isLoading || Object.keys(Result).length === 0) {
@@ -95,35 +97,38 @@ export default function Home({ params }: { params: { resultId: string } }) {
             </tfoot>
           </table>
         </div>
-        <div className="lg:hidden block" >
+        <div className="lg:hidden block">
           <div className="flex flex-col gap-2">
-          {Result.ResultHistory?.map((item: any, index: number) => {
-            return (
-              <div key={item.id} className="grid grid-cols-1 gap-2 w-[90%] mx-auto dark:bg-slate-950 bg-stone-300 rounded-lg p-3">
-                <h3>
-                  {" "}
-                  {index + 1}{") "}{item.Question}
-                </h3>
-                <h5 className="text-center text-green-500">Correct Answer</h5>
-                <p className="text-center">{item.CorrectOption}</p>
-                <h5 className="text-center text-blue-500">Your Answer</h5>
-                <p className="text-center">{item.SelectedOption}</p>
-                {item.CorrectOption == item.SelectedOption ? (
-                  <div className="py-2 my-3 text-center items-center flex justify-center bg-green-500 rounded-xl w-full ">
-                  <Check size={25} className="text-white" />
+            {Result.ResultHistory?.map((item: any, index: number) => {
+              return (
+                <div
+                  key={item.id}
+                  className="grid grid-cols-1 gap-2 w-[90%] mx-auto dark:bg-slate-950 bg-stone-300 rounded-lg p-3"
+                >
+                  <h3>
+                    {" "}
+                    {index + 1}
+                    {") "}
+                    {item.Question}
+                  </h3>
+                  <h5 className="text-center text-green-500">Correct Answer</h5>
+                  <p className="text-center">{item.CorrectOption}</p>
+                  <h5 className="text-center text-blue-500">Your Answer</h5>
+                  <p className="text-center">{item.SelectedOption}</p>
+                  {item.CorrectOption == item.SelectedOption ? (
+                    <div className="py-2 my-3 text-center items-center flex justify-center bg-green-500 rounded-xl w-full ">
+                      <Check size={25} className="text-white" />
+                    </div>
+                  ) : (
+                    <div className="py-2 my-3 text-center items-center flex justify-center bg-rose-500 rounded-xl w-full ">
+                      <XCircle className="text-white" size={25} />
+                    </div>
+                  )}
                 </div>
-                ):(
-                  <div className="py-2 my-3 text-center items-center flex justify-center bg-rose-500 rounded-xl w-full ">
-                   <XCircle className="text-white" size={25} />
-                </div>
-                )}
-                
-              </div>
-            );
-          })}
-
+              );
+            })}
           </div>
-         
+
           <div
             className={`grid grid-cols-2 w-[90%] mx-auto ${
               !isPass ? "bg-exact-red" : "bg-green-500"
@@ -132,6 +137,12 @@ export default function Home({ params }: { params: { resultId: string } }) {
             <p className="text-md">Total: {Result.total}</p>
             <p className="text-md">Your marks: {Result.mark}</p>
           </div>
+        </div>
+        <div
+          onClick={() => router.back()}
+          className="p-3 text-lg bg-exact-purple flex justify-center items-centre rounded-lg text-white cursor-pointer"
+        >
+          Restart Quiz
         </div>
       </div>
     </div>

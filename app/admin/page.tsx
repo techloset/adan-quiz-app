@@ -45,7 +45,7 @@ export default function Home() {
         <div className="flex justify-center items-center w-full">
           <div className="w-8 h-8 rounded-full border-4 border-slate-950 dark:border-stone-300 " />
         </div>
-      ) : Quiz.length !== 0 ? (
+      ) : Quiz?.length !== 0 ? (
         <div className={` relative pb-[100px] lg:pb-[200px] -mt-16 `}>
           <div className={`mx-[24px] lg:mx-[80px]  xl:mx-[160px]`}>
             <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-center text-center gap-x-8 gap-y-[60px]">

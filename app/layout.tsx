@@ -10,13 +10,15 @@ import Header from "@/components/Header";
 
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
-import { AuthProvider, useAuth } from "@/context/auth";
+import { AuthProvider } from "@/context/auth";
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+ 
+  
   return (
     <html lang="en">
       <body
