@@ -17,7 +17,7 @@ const Header = () => {
   const pathname = usePathname();
   const [auth] = useAuth();
   useEffect(() => {
-    if (auth.token){
+    if (auth.token) {
       Instance.defaults.headers.common.Authorization = `Bearer ${auth.token}`;
     }
   }, []);
@@ -36,18 +36,18 @@ const Header = () => {
             } border-exact-black/25 dark:border-exact-white pb-4 md:border-none `}
           >
             <div className="flex gap-[1px] ">
-            <Image
-              src="/Logo.svg"
-              alt="Logo"
-              width={100}
-              height={100}
-              className="relative top-4 -left-8"
-            />
-             <div className="block lg:hidden relative top-8 -left-8">
-              <ThemeToggler />
+              <Image
+                src="/Logo.svg"
+                alt="Logo"
+                width={100}
+                height={100}
+                className="relative top-4 -left-8"
+              />
+              <div className="block lg:hidden relative top-8 -left-8">
+                <ThemeToggler />
+              </div>
             </div>
-            </div>
-            
+
             <div
               onClick={() => setOpenMenu(openMenu === false ? true : false)}
               className="md:hidden cursor-pointer"
@@ -59,7 +59,6 @@ const Header = () => {
                 width={40}
                 height={40}
               />
-
             </div>
           </div>
           <ul
@@ -74,7 +73,9 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               } cursor-pointer  text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/"} onClick={()=> setOpenMenu(!openMenu)}>Home</Link>
+              <Link href={"/"} onClick={() => setOpenMenu(false)}>
+                Home
+              </Link>
             </li>
 
             <li
@@ -84,7 +85,9 @@ const Header = () => {
                   : "text-exact-gray dark:text-white"
               }  cursor-pointer  text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
             >
-              <Link href={"/quizs"} onClick={()=> setOpenMenu(false)}>Quizs</Link>
+              <Link href={"/quizs"} onClick={() => setOpenMenu(false)}>
+                Quizs
+              </Link>
             </li>
             {!auth?.user?.admin ? (
               <li
@@ -94,7 +97,9 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/results"} onClick={()=> setOpenMenu(false)}>History</Link>
+                <Link href={"/results"} onClick={() => setOpenMenu(false)}>
+                  History
+                </Link>
               </li>
             ) : (
               <li
@@ -104,7 +109,9 @@ const Header = () => {
                     : "text-exact-gray dark:text-white"
                 } text-xl  hover:text-exact-purple  dark:hover:text-exact-yellow font-semibold`}
               >
-                <Link href={"/admin"} onClick={()=> setOpenMenu(false)}>Admin</Link>
+                <Link href={"/admin"} onClick={() => setOpenMenu(false)}>
+                  Admin
+                </Link>
               </li>
             )}
           </ul>
@@ -119,7 +126,10 @@ const Header = () => {
               } md:max-w-fit leading-[26px] font-semibold md:shadow-[-5px_10px_30px_rgba(76,64,247,0.5)] py-[19px] px-[35px] bg-exact-purple rounded-xl text-white`}
             >
               {!auth?.user?.email ? (
-                <Link href={"/auth"} onClick={()=> setOpenMenu(false)}> Log In / Sign Up</Link>
+                <Link href={"/auth"} onClick={() => setOpenMenu(false)}>
+                  {" "}
+                  Log In / Sign Up
+                </Link>
               ) : (
                 <p onClick={() => setOpen(true)}>Log out</p>
               )}

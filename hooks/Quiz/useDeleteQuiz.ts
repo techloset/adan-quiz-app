@@ -6,12 +6,14 @@ import { deleteQuizs } from "@/store/quizSlice";
 import { toast } from "react-hot-toast";
 
 import { QuizType } from "@/type";
+import { useAuth } from "@/context/auth";
 
 export default function useDeleteQuiz() {
   const dispatch = useDispatch(); // delete the data
   const [loading, setLoading] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [currentItem, setCurrentItem] = useState<QuizType | null>(null);
+  const [auth] = useAuth();
 
   // To Delete Popover
   const DelelePopover = (item: QuizType) => {
@@ -29,6 +31,7 @@ export default function useDeleteQuiz() {
     try {
       setLoading(true);
       const quiz = {
+        token: auth?.token,
         Quiz: item,
       };
       await dispatch<any>(deleteQuizs(quiz));
@@ -43,5 +46,12 @@ export default function useDeleteQuiz() {
       setLoading(false);
     }
   };
-  return { onDeleteHandler, DelelePopover, currentItem, openDelete, loading ,setOpenDelete};
+  return {
+    onDeleteHandler,
+    DelelePopover,
+    currentItem,
+    openDelete,
+    loading,
+    setOpenDelete,
+  };
 }
